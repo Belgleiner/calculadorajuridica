@@ -17,7 +17,7 @@
         .btn-calc { width: 100%; padding: 15px; margin-top: 25px; border: none; border-radius: 10px; background: #d88fa0; color: white; font-weight: bold; font-size: 1.1em; cursor: pointer; transition: 0.3s; }
         .btn-calc:hover { background: #c5768b; }
         .resultado { margin-top: 25px; background: #fff0f4; padding: 20px; border-radius: 10px; text-align: left; border-left: 5px solid #d88fa0; display: none; }
-        .btn-whatsapp { background: #25d366; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 100%; display: none; }
+        .btn-whatsapp { background: #25d366; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 100%; display: none; }
         .aviso { margin-top: 30px; font-size: 0.75em; color: #999; line-height: 1.4; }
     </style>
 </head>
@@ -50,7 +50,7 @@
             <input type="checkbox" id="prazoDobro">
             <label for="prazoDobro">Sou assistido pela <strong>Defensoria Pública</strong> (Prazo em Dobro)</label>
         </div>
-        <label style="font-size: 0.85em; margin-top: 10px;">Data de feriado municipal (se houver):</label>
+        <label style="font-size: 0.85em; margin-top: 10px;">Feriado municipal na sua cidade (se houver):</label>
         <input type="date" id="feriadoMun">
     </div>
 
@@ -60,96 +60,31 @@
     <button class="btn-whatsapp" id="btnWhatsapp" onclick="enviarWhatsapp()">📲 Enviar Resumo p/ Advogado</button>
 
     <div class="aviso">
-        <strong>Aviso:</strong> Ferramenta educativa. Considera feriados estaduais e recessos (23-30/06 e 20/12-06/01).<br>
-        <strong>Belizza Araújo – Oficiala de Justiça TJPE</strong>
+        <strong>Aviso:</strong> Ferramenta educativa baseada em 2026. <br>
+        Considera feriados estaduais e recessos (23-30/06 e 20/12-06/01).
     </div>
 </div>
 
 <script>
+// Objeto de prazos corrigido (com todas as vírgulas necessárias)
 const prazos = {
     civil: {
-        "Resposta inicial (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC"},
-        "Recorrer da sentença - 15 dias": {dias: 15, tipo: "uteis", base: "CPC"},
-        "Embargos de declaração - 5 dias": {dias: 5, tipo: "uteis", base: "CPC"},
-        "Execução Judicial (Pagamento) - 3 dias": {dias: 3, tipo: "uteis", base: "CPC"},
-        "Execução Extrajudicial (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC"}
+        "Contestação (15 dias úteis)": {dias: 15, tipo: "uteis", base: "Art. 335 CPC"},
+        "Recurso/Apelação (15 dias úteis)": {dias: 15, tipo: "uteis", base: "Art. 1003 CPC"},
+        "Embargos de Declaração (5 dias úteis)": {dias: 5, tipo: "uteis", base: "Art. 1023 CPC"},
+        "Execução Judicial (3 dias p/ pagamento)": {dias: 3, tipo: "uteis", base: "Art. 523 CPC"},
+        "Execução Extrajudicial (15 dias p/ embargos)": {dias: 15, tipo: "uteis", base: "Art. 915 CPC"}
     },
     familia: {
-        "Ação de alimentos (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 5.478/68"},
-        "Execução de alimentos (Pagamento) - 3 dias": {dias: 3, tipo: "uteis", base: "CPC"}
+        "Ação de Alimentos (15 dias úteis)": {dias: 15, tipo: "uteis", base: "Lei 5.478/68"},
+        "Execução de Alimentos (3 dias p/ pagar)": {dias: 3, tipo: "uteis", base: "Art. 528 CPC"}
     },
     criminal: {
-        "Resposta à acusação - 10 dias": {dias: 10, tipo: "corridos", base: "CPP"},
-        "Apelação criminal - 5 dias": {dias: 5, tipo: "corridos", base: "CPP"}
+        "Resposta à Acusação (10 dias corridos)": {dias: 10, tipo: "corridos", base: "Art. 396 CPP"},
+        "Apelação Criminal (5 dias corridos)": {dias: 5, tipo: "corridos", base: "Art. 593 CPP"}
     },
     violencia: {
-        "Defesa - 5 dias": {dias: 5, tipo: "corridos", base: "Lei Maria da Penha"}
+        "Defesa - Lei Maria da Penha (5 dias)": {dias: 5, tipo: "corridos", base: "Lei 11.340/06"}
     },
     eca: {
-        "Apelação - 10 dias": {dias: 10, tipo: "corridos", base: "ECA"},
-        "Defesa prévia - 3 dias": {dias: 3, tipo: "corridos", base: "ECA"}
-    }
-};
-
-const feriados = ["2026-01-01", "2026-02-16", "2026-02-17", "2026-02-18", "2026-03-06", "2026-04-02", "2026-04-03", "2026-04-21", "2026-05-01", "2026-06-22", "2026-06-24", "2026-07-16", "2026-08-10", "2026-09-07", "2026-10-12", "2026-10-30", "2026-11-02", "2026-11-20", "2026-12-08", "2026-12-25"];
-
-function emRecesso(iso) {
-    const d = new Date(iso + "T00:00:00");
-    const r1 = d >= new Date("2026-06-23T00:00:00") && d <= new Date("2026-06-30T00:00:00");
-    const r2 = d >= new Date("2026-12-20T00:00:00") && d <= new Date("2027-01-06T00:00:00");
-    return r1 || r2;
-}
-
-function carregarSubcategorias() {
-    const cat = document.getElementById("categoria").value;
-    const ato = document.getElementById("ato");
-    ato.innerHTML = '<option value="">Selecione...</option>';
-    if (cat) {
-        for (let item in prazos[cat]) {
-            let opt = document.createElement("option");
-            opt.value = item; opt.text = item; ato.appendChild(opt);
-        }
-    }
-}
-
-let resumoWhats = "";
-
-function calcular() {
-    const cat = document.getElementById("categoria").value;
-    const atoSel = document.getElementById("ato").value;
-    const dataInic = document.getElementById("data").value;
-    const fMun = document.getElementById("feriadoMun").value;
-    const isDobro = document.getElementById("prazoDobro").checked;
-
-    if (!cat || !atoSel || !dataInic) { alert("Preencha os campos!"); return; }
-
-    const info = prazos[cat][atoSel];
-    let qtdDias = isDobro ? info.dias * 2 : info.dias;
-    let dataFinal = new Date(dataInic + "T00:00:00");
-    let cont = 0;
-
-    while (cont < qtdDias) {
-        dataFinal.setDate(dataFinal.getDate() + 1);
-        let iso = dataFinal.toISOString().split('T')[0];
-        if (info.tipo === "uteis") {
-            let fds = dataFinal.getDay() === 0 || dataFinal.getDay() === 6;
-            if (!fds && !feriados.includes(iso) && !emRecesso(iso) && iso !== fMun) cont++;
-        } else {
-            cont++;
-        }
-    }
-
-    document.getElementById("resultado").style.display = "block";
-    document.getElementById("btnWhatsapp").style.display = "block";
-    const dataF = dataFinal.toLocaleDateString('pt-BR');
-    document.getElementById("resultado").innerHTML = `<strong>Data Final: ${dataF}</strong><br><small>Base: ${info.base}</small>`;
-    
-    resumoWhats = `Olá! Calculei meu prazo jurídico:%0A📌 *Ato:* ${atoSel}%0A⚖️ *Vencimento:* ${dataF}%0A*Simulador Belizza Araújo*`;
-}
-
-function enviarWhatsapp() {
-    window.open(`https://api.whatsapp.com/send?text=${resumoWhats}`, '_blank');
-}
-</script>
-</body>
-</html>
+        "Apelação ECA (10 dias corridos)": {dias: 10, tipo: "corridos", base: "Art. 198 ECA
