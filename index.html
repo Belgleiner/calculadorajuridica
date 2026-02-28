@@ -79,6 +79,35 @@ Ferramenta educativa para ajudar você a entender quando termina seu prazo proce
 <label>Tipo de documento recebido:</label>
 <select id="ato"></select>
 
+civil:{
+"Resposta inicial (contestação) (15 dias úteis)":{dias:15,tipo:"uteis",base:"CPC"},
+"Recorrer da sentença (15 dias úteis)":{dias:15,tipo:"uteis",base:"CPC"},
+"Embargos de declaração (5 dias úteis)":{dias:5,tipo:"uteis",base:"CPC"}
+"Ação de Execução judicial ou extrajudicial (contestação) (15 dias úteis)":{dias:15,tipo:"uteis",base:"CPC"},
+"Ação de Execução judicial (pagamento) (3 dias úteis)":{dias:3,tipo:"uteis",base:"CPC"}
+"Ação de Execução extrajudicial (pagamento) (15 dias úteis)":{dias:15,tipo:"uteis",base:"CPC"},
+},
+
+familia:{
+"Ação de alimentos (contestação) (15 dias úteis)":{dias:15,tipo:"uteis",base:"Lei 5.478/68"},
+"Ação de Execução de alimentos (pagamento) (3 dias úteis)":{dias:3,tipo:"uteis",base:"CPC"}
+},
+
+criminal:{
+"Resposta à acusação (10 dias corridos)":{dias:10,tipo:"corridos",base:"CPP"},
+"Apelação criminal (5 dias corridos)":{dias:5,tipo:"corridos",base:"CPP"}
+},
+
+violencia:{
+"Defesa (5 dias corridos)":{dias:5,tipo:"corridos",base:"CPP + Lei Maria da Penha"},
+"Medida protetiva (duração em média)":{dias:180,tipo:"corridos",base:"Lei 11.340/06"}
+},
+
+eca:{
+"Apelação (10 dias corridos)":{dias:10,tipo:"corridos",base:"ECA"},
+"Defesa prévia (3 dias corridos após a audiência de apresentação)":{dias:3,tipo:"corridos",base:"ECA"}
+};
+  
 <label>Data em que você recebeu o documento:</label>
 <input type="date" id="data">
 
@@ -229,6 +258,7 @@ final.toLocaleDateString("pt-BR")+
 
 </body>
 </html>
+
 
 
 
