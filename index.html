@@ -10,31 +10,29 @@
         .subtitulo { font-size: 0.9em; color: #888; margin-bottom: 20px; }
         label { display: block; margin-top: 15px; text-align: left; font-weight: bold; color: #7a4a52; }
         select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
-        
-        /* Estilo para o Prazo em Dobro */
         .checkbox-container { display: flex; align-items: center; margin-top: 20px; background: #fff5f7; padding: 10px; border-radius: 8px; border: 1px dashed #d88fa0; }
         .checkbox-container input { width: auto; margin-right: 10px; margin-top: 0; cursor: pointer; }
         .checkbox-container label { margin-top: 0; font-size: 0.9em; cursor: pointer; }
-
         button { width: 100%; padding: 15px; margin-top: 25px; border: none; border-radius: 10px; background: #d88fa0; color: white; font-weight: bold; font-size: 1.1em; cursor: pointer; transition: 0.3s; }
         button:hover { background: #c5768b; }
         .resultado { margin-top: 25px; background: #fff0f4; padding: 20px; border-radius: 10px; text-align: left; border-left: 5px solid #d88fa0; display: none; }
         .alerta { color: #d9534f; font-weight: bold; margin-top: 10px; padding: 10px; background: #f9d6d5; border-radius: 5px; }
-        .aviso { margin-top: 30px; font-size: 0.8em; color: #999; line-height: 1.5; }
+        .dica-leigo { margin-top: 15px; font-size: 0.9em; color: #555; background: #fff; padding: 10px; border-radius: 5px; border: 1px solid #eee; }
+        .aviso { margin-top: 30px; font-size: 0.75em; color: #999; line-height: 1.5; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>🌸 Simulador de Prazos – TJPE</h1>
-    <div class="subtitulo">Ferramenta educativa para auxílio na contagem processual.</div>
+    <div class="subtitulo">Ferramenta educativa de auxílio processual.</div>
 
- <label>Área do processo:</label>
+    <label>Área do processo:</label>
     <select id="categoria" onchange="carregarSubcategorias()">
         <option value="">Selecione a área...</option>
         <option value="civil">Cível (Justiça Comum)</option>
         <option value="juizado">Juizado Especial (Pequenas Causas)</option>
-        <option value="familia">Família - Alimentos</option>
+        <option value="familia">Família / Alimentos</option>
         <option value="imobiliario">Imobiliário (Despejo/Saída)</option>
         <option value="despachos">Ordens do Juiz (Despachos)</option>
         <option value="urgentes">Busca e Apreensão</option>
@@ -48,7 +46,7 @@
         <option value="">Selecione a área primeiro</option>
     </select>
   
-    <label>Data da citação/intimação:</label>
+    <label>Data que recebeu o papel (ou audiência):</label>
     <input type="date" id="data">
 
     <div class="checkbox-container">
@@ -61,8 +59,8 @@
     <div class="resultado" id="resultado"></div>
 
     <div class="aviso">
-        <strong>Atenção:</strong> Inclui Recesso Junino (23-30/06) e Fim de Ano (20/12-06/01). Não inclui os feriados municipais!<br>
-        Esta ferramenta é informativa e baseada no calendário de 2026.<br>
+        <strong>Atenção:</strong> Este simulador inclui Recessos do TJPE.<br>
+        Não inclui feriados municipais (padroeiros locais).<br>
         <strong>Belizza Araújo – Oficiala de Justiça TJPE</strong>
     </div>
 </div>
@@ -70,13 +68,13 @@
 <script>
 const prazos = {
     civil: {
-        "Defesa (contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 e 523 do CPC"},
-        "Recurso de Sentença (Apelação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
+        "Defesa (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 e 523 do CPC"},
+        "Recorrer da sentença (Apelação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
         "Embargos de Declaração - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1.023 do CPC"},
         "Execução Extrajudicial (Pagamento) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 829 do CPC"}
     },
     juizado: {
-        "Defesa ou Pagamento (Juizado) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 9.099/95 e CPC"},
+        "Defesa ou Pagamento (Juizado) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 9.099/95"},
         "Recurso Inominado - 10 dias": {dias: 10, tipo: "uteis", base: "Art. 42 da Lei 9.099/95"},
         "Embargos de Declaração - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 49 da Lei 9.099/95"}
     },
@@ -84,29 +82,30 @@ const prazos = {
         "Ação de Alimentos (Defesa) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC / Lei 5.478/68"},
         "Execução de Alimentos (Pagar ou Justificar) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"}
     },
+    imobiliario: {
+        "Despejo (Defesa) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 8.245/91"},
+        "Notificação para Desocupar - 30 dias": {dias: 30, tipo: "corridos", base: "Lei do Inquilinato"}
+    },
+    despachos: {
+        "Cumprir Ordem do Juiz - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218, §3º do CPC"},
+        "Cumprir Ordem do Juiz - 10 dias": {dias: 10, tipo: "uteis", base: "Prazo assinalado"},
+        "Cumprir Ordem do Juiz - 15 dias": {dias: 15, tipo: "uteis", base: "Prazo assinalado"}
+    },
+    urgentes: {
+        "Defesa em Busca e Apreensão - 15 dias": {dias: 15, tipo: "uteis", base: "Dec-Lei 911/69"},
+        "Pagar para reaver veículo (Busca) - 5 dias": {dias: 5, tipo: "corridos", base: "Dec-Lei 911/69"}
+    },
     criminal: {
         "Resposta à Acusação (Defesa) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 do CPP"},
-        "Recurso de Apelação - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
+        "Apelação Criminal - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
     },
     violencia: {
         "Defesa em Medida Protetiva - 5 dias": {dias: 5, tipo: "corridos", base: "Lei Maria da Penha"}
     },
     eca: {
-        "Defesa Prévia (contados da audiência) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, §3º do ECA"},
+        "Defesa Prévia (da audiência) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, §3º do ECA"},
         "Recurso no ECA - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
     }
-    despachos: {
-        "Cumprir ordem do Juiz - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218, §3º do CPC"},
-        "Cumprir ordem do Juiz - 10 dias": {dias: 10, tipo: "uteis", base: "Prazo fixado pelo Juiz"},
-        "Cumprir ordem do Juiz - 15 dias": {dias: 15, tipo: "uteis", base: "Prazo fixado pelo Juiz"}
-    },
-    imobiliario: {
-        "Despejo/Desocupação (Defesa) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 8.245/91 (Lei do Inquilinato)"},
-        "Notificação para Sair do Imóvel - 30 dias": {dias: 30, tipo: "corridos", base: "Art. 6º ou 46 da Lei 8.245/91"}
-    },
-    Busca e apreensão de bens: {
-    "Busca e Apreensão de bens (Defesa) - 15 dias": {dias: 15, tipo: "uteis", base: "Dec-Lei 911/69"},
-        "Busca e Apreensão de bens (Pagar para reaver) - 5 dias": {dias: 5, tipo: "corridos", base: "Dec-Lei 911/69 - Prazo Próprio"},
 };
 
 const feriados = [
@@ -128,8 +127,8 @@ function emRecesso(dataISO) {
 function carregarSubcategorias() {
     const cat = document.getElementById("categoria").value;
     const ato = document.getElementById("ato");
-    ato.innerHTML = '<option value="">Selecione o ato...</option>';
-    if (!cat) return;
+    ato.innerHTML = '<option value="">Selecione o documento...</option>';
+    if (!cat || !prazos[cat]) return;
     for (let item in prazos[cat]) {
         let opt = document.createElement("option");
         opt.value = item; opt.text = item; ato.appendChild(opt);
@@ -139,16 +138,16 @@ function carregarSubcategorias() {
 function calcular() {
     const cat = document.getElementById("categoria").value;
     const atoSel = document.getElementById("ato").value;
-    const dataInicial = document.getElementById("data").value;
+    const dataInicInput = document.getElementById("data").value;
     const isDobro = document.getElementById("prazoDobro").checked;
 
-    if (!cat || !atoSel || !dataInicial) {
-        alert("Preencha todos os campos."); return;
+    if (!cat || !atoSel || !dataInicInput) {
+        alert("Por favor, preencha todos os campos."); return;
     }
 
     const info = prazos[cat][atoSel];
     let qtdDias = isDobro ? info.dias * 2 : info.dias;
-    let dataFinal = new Date(dataInicial + "T00:00:00");
+    let dataFinal = new Date(dataInicInput + "T00:00:00");
     
     if (info.tipo === "uteis") {
         let cont = 0;
@@ -166,16 +165,20 @@ function calcular() {
     const resDiv = document.getElementById("resultado");
     const hoje = new Date(); hoje.setHours(0,0,0,0);
     resDiv.style.display = "block";
+    
     resDiv.innerHTML = `
         <strong>📅 Prazo Final: ${dataFinal.toLocaleDateString('pt-BR')}</strong>
-        ${dataFinal < hoje ? '<div class="alerta">⚠️ Prazo possivelmente vencido!</div>' : ''}
-        <p style="margin-top:10px; font-size:0.85em;">
-            <strong>Contagem:</strong> ${qtdDias} ${info.tipo === "uteis" ? "dias úteis" : "dias corridos"} ${isDobro ? "(Dobro aplicado)" : ""}<br>
-            <strong>Base:</strong> ${info.base}
+        ${dataFinal < hoje ? '<div class="alerta">⚠️ Atenção: Prazo possivelmente vencido!</div>' : ''}
+        <div class="dica-leigo">
+            <strong>Dica da Oficiala:</strong><br>
+            Este prazo é contado em <strong>${info.tipo}</strong>. <br>
+            Procure um advogado ou a Defensoria Pública imediatamente portando este documento.
+        </div>
+        <p style="margin-top:10px; font-size:0.8em; color: #666;">
+            Fundamento: ${info.base} | Contagem: ${qtdDias} dias.
         </p>
     `;
 }
 </script>
 </body>
 </html>
-
