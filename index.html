@@ -50,41 +50,10 @@
             <input type="checkbox" id="prazoDobro">
             <label for="prazoDobro">Sou assistido pela <strong>Defensoria Pública</strong> (Prazo em Dobro)</label>
         </div>
-        <label style="font-size: 0.85em; margin-top: 10px;">Feriado municipal na sua cidade (se houver):</label>
+        <label style="font-size: 0.85em; margin-top: 10px;">Feriado municipal (se houver):</label>
         <input type="date" id="feriadoMun">
     </div>
 
     <button class="btn-calc" onclick="calcular()">CALCULAR PRAZO FINAL</button>
 
-    <div class="resultado" id="resultado"></div>
-    <button class="btn-whatsapp" id="btnWhatsapp" onclick="enviarWhatsapp()">📲 Enviar Resumo p/ Advogado</button>
-
-    <div class="aviso">
-        <strong>Aviso:</strong> Ferramenta educativa baseada em 2026. <br>
-        Considera feriados estaduais e recessos (23-30/06 e 20/12-06/01).
-    </div>
-</div>
-
-<script>
-// Objeto de prazos corrigido (com todas as vírgulas necessárias)
-const prazos = {
-    civil: {
-        "Contestação (15 dias úteis)": {dias: 15, tipo: "uteis", base: "Art. 335 CPC"},
-        "Recurso/Apelação (15 dias úteis)": {dias: 15, tipo: "uteis", base: "Art. 1003 CPC"},
-        "Embargos de Declaração (5 dias úteis)": {dias: 5, tipo: "uteis", base: "Art. 1023 CPC"},
-        "Execução Judicial (3 dias p/ pagamento)": {dias: 3, tipo: "uteis", base: "Art. 523 CPC"},
-        "Execução Extrajudicial (15 dias p/ embargos)": {dias: 15, tipo: "uteis", base: "Art. 915 CPC"}
-    },
-    familia: {
-        "Ação de Alimentos (15 dias úteis)": {dias: 15, tipo: "uteis", base: "Lei 5.478/68"},
-        "Execução de Alimentos (3 dias p/ pagar)": {dias: 3, tipo: "uteis", base: "Art. 528 CPC"}
-    },
-    criminal: {
-        "Resposta à Acusação (10 dias corridos)": {dias: 10, tipo: "corridos", base: "Art. 396 CPP"},
-        "Apelação Criminal (5 dias corridos)": {dias: 5, tipo: "corridos", base: "Art. 593 CPP"}
-    },
-    violencia: {
-        "Defesa - Lei Maria da Penha (5 dias)": {dias: 5, tipo: "corridos", base: "Lei 11.340/06"}
-    },
-    eca: {
-        "Apelação ECA (10 dias corridos)": {dias: 10, tipo: "corridos", base: "Art. 198 ECA
+    <div id
