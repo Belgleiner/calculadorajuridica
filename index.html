@@ -8,16 +8,51 @@
         .container { background: white; max-width: 600px; margin: auto; padding: 30px; border-radius: 18px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
         h1 { color: #b76e79; margin-bottom: 5px; font-size: 1.8em; }
         .subtitulo { font-size: 0.9em; color: #888; margin-bottom: 20px; }
+        
         label { display: block; margin-top: 15px; text-align: left; font-weight: bold; color: #7a4a52; }
-        select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
+        
+        /* Padronização de todos os campos e botões */
+        select, input, .btn-calc, .btn-whatsapp { 
+            width: 100%; 
+            padding: 12px; 
+            margin-top: 5px; 
+            border-radius: 8px; 
+            border: 1px solid #ddd; 
+            box-sizing: border-box; /* Garante que o padding não aumente o tamanho real */
+            font-size: 1em;
+            display: block;
+        }
+
         .opcional { background: #f9f9f9; padding: 15px; border-radius: 10px; margin-top: 15px; border: 1px solid #eee; }
+        
         .checkbox-container { display: flex; align-items: center; margin-top: 10px; text-align: left; }
-        .checkbox-container input { width: auto; margin-right: 10px; margin-top: 0; }
-        .checkbox-container label { margin-top: 0; font-weight: normal; font-size: 0.9em; }
-        .btn-calc { width: 100%; padding: 15px; margin-top: 25px; border: none; border-radius: 10px; background: #d88fa0; color: white; font-weight: bold; font-size: 1.1em; cursor: pointer; transition: 0.3s; }
+        .checkbox-container input { width: auto; margin-right: 10px; margin-top: 0; display: inline-block; }
+        .checkbox-container label { margin-top: 0; font-weight: normal; font-size: 0.9em; display: inline-block; }
+
+        .btn-calc { 
+            margin-top: 25px; 
+            border: none; 
+            background: #d88fa0; 
+            color: white; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.3s; 
+        }
         .btn-calc:hover { background: #c5768b; }
+        
         .resultado { margin-top: 25px; background: #fff0f4; padding: 20px; border-radius: 10px; text-align: left; border-left: 5px solid #d88fa0; display: none; }
-        .btn-whatsapp { background: #25d366; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 100%; display: none; }
+        
+        .btn-whatsapp { 
+            background: #25d366; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: bold; 
+            margin-top: 15px; 
+            display: none; 
+        }
+        .btn-whatsapp:hover { background: #128c7e; }
+        
         .aviso { margin-top: 30px; font-size: 0.75em; color: #999; line-height: 1.4; }
     </style>
 </head>
@@ -48,7 +83,7 @@
     <div class="opcional">
         <div class="checkbox-container">
             <input type="checkbox" id="prazoDobro">
-            <label for="prazoDobro">Sou assistido pela <strong>Defensoria Pública</strong> (Prazo em Dobro)</label>
+            <label for="prazoDobro">Sou assistido pela <strong>Defensoria Pública</strong></label>
         </div>
         <label style="font-size: 0.85em; margin-top: 10px;">Feriado municipal (se houver):</label>
         <input type="date" id="feriadoMun">
@@ -56,4 +91,103 @@
 
     <button class="btn-calc" onclick="calcular()">CALCULAR PRAZO FINAL</button>
 
-    <div id
+    <div id="resultado" class="resultado"></div>
+    <button id="btnWhatsapp" class="btn-whatsapp" onclick="enviarWhatsapp()">📲 ENVIAR RESUMO P/ ADVOGADO</button>
+
+    <div class="aviso">
+        <strong>Aviso:</strong> Ferramenta educativa (Base 2026). <br>
+        Considera feriados de Pernambuco e recessos (Junho e Dezembro).
+    </div>
+</div>
+
+<script>
+const dadosPrazos = {
+    civil: {
+        "Contestação (15 dias úteis)": {dias: 15, tipo: "uteis", base: "Art. 335 CPC"},
+        "Apelação (15 dias úteis)": {dias: 15, tipo: "uteis", base: "Art. 1003 CPC"},
+        "Embargos de Declaração (5 dias úteis)": {dias: 5, tipo: "uteis", base: "Art. 1023 CPC"},
+        "Pagamento Execução Judicial (3 dias)": {dias: 3, tipo: "uteis", base: "Art. 523 CPC"}
+    },
+    familia: {
+        "Contestação Alimentos (15 dias úteis)": {dias: 15, tipo: "uteis", base: "Lei 5.478/68"},
+        "Pagar Pensão - Rito Prisão (3 dias)": {dias: 3, tipo: "uteis", base: "Art. 528 CPC"}
+    },
+    criminal: {
+        "Resposta à Acusação (10 dias corridos)": {dias: 10, tipo: "corridos", base: "Art. 396 CPP"},
+        "Apelação Criminal (5 dias corridos)": {dias: 5, tipo: "corridos", base: "Art. 593 CPP"}
+    },
+    violencia: {
+        "Defesa - Lei Maria da Penha (5 dias)": {dias: 5, tipo: "corridos", base: "Lei 11.340/06"}
+    },
+    eca: {
+        "Apelação ECA (10 dias corridos)": {dias: 10, tipo: "corridos", base: "Art. 198 ECA"},
+        "Defesa Prévia (3 dias corridos)": {dias: 3, tipo: "corridos", base: "Art. 186 ECA"}
+    }
+};
+
+const feriadosPE = ["2026-01-01", "2026-02-16", "2026-02-17", "2026-02-18", "2026-03-06", "2026-04-02", "2026-04-03", "2026-04-21", "2026-05-01", "2026-06-22", "2026-06-24", "2026-07-16", "2026-08-10", "2026-09-07", "2026-10-12", "2026-10-30", "2026-11-02", "2026-11-20", "2026-12-08", "2026-12-25"];
+
+function carregarSubcategorias() {
+    const cat = document.getElementById("categoria").value;
+    const ato = document.getElementById("ato");
+    ato.innerHTML = '<option value="">Selecione o ato...</option>';
+    if (cat && dadosPrazos[cat]) {
+        for (let item in dadosPrazos[cat]) {
+            let opt = document.createElement("option");
+            opt.value = item; opt.text = item; ato.appendChild(opt);
+        }
+    }
+}
+
+let textoWhats = "";
+
+function calcular() {
+    const cat = document.getElementById("categoria").value;
+    const atoSel = document.getElementById("ato").value;
+    const dataInic = document.getElementById("data").value;
+    const fMun = document.getElementById("feriadoMun").value;
+    const isDobro = document.getElementById("prazoDobro").checked;
+
+    if (!cat || !atoSel || !dataInic) {
+        alert("Preencha os campos obrigatórios.");
+        return;
+    }
+
+    const info = dadosPrazos[cat][atoSel];
+    let qtdDias = isDobro ? info.dias * 2 : info.dias;
+    let dataFinal = new Date(dataInic + "T00:00:00");
+    let cont = 0;
+
+    while (cont < qtdDias) {
+        dataFinal.setDate(dataFinal.getDate() + 1);
+        let iso = dataFinal.toISOString().split('T')[0];
+        
+        if (info.tipo === "uteis") {
+            let fds = (dataFinal.getDay() === 0 || dataFinal.getDay() === 6);
+            let feriado = feriadosPE.includes(iso) || iso === fMun;
+            let recJun = (iso >= "2026-06-23" && iso <= "2026-06-30");
+            let recDez = (iso >= "2026-12-20" || iso <= "2027-01-06");
+            
+            if (!fds && !feriado && !recJun && !recDez) cont++;
+        } else {
+            cont++;
+        }
+    }
+
+    const resStr = dataFinal.toLocaleDateString('pt-BR');
+    const resDiv = document.getElementById("resultado");
+    const btnW = document.getElementById("btnWhatsapp");
+
+    resDiv.style.display = "block";
+    resDiv.innerHTML = `<strong>📅 Prazo Final: ${resStr}</strong><br><small>Contagem: ${qtdDias} dias. Base: ${info.base}</small>`;
+    
+    btnW.style.display = "block";
+    textoWhats = `Olá! Calculei meu prazo jurídico:%0A📌 *Ato:* ${atoSel}%0A⚖️ *Vencimento:* ${resStr}`;
+}
+
+function enviarWhatsapp() {
+    window.open(`https://api.whatsapp.com/send?text=${textoWhats}`, '_blank');
+}
+</script>
+</body>
+</html>
