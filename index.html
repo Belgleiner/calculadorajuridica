@@ -1,233 +1,131 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<title>Calculadora Jurídica Completa</title>
+    <meta charset="UTF-8">
+    <title>Quando vence meu prazo? – Simulador TJPE</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fdf7fa; padding: 20px; text-align: center; color: #444; }
+        .container { background: white; max-width: 600px; margin: auto; padding: 30px; border-radius: 18px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        h1 { color: #b76e79; margin-bottom: 5px; font-size: 1.8em; }
+        .subtitulo { font-size: 0.9em; color: #888; margin-bottom: 20px; }
+        label { display: block; margin-top: 15px; text-align: left; font-weight: bold; color: #7a4a52; }
+        select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
+        
+        .opcional { background: #f9f9f9; padding: 15px; border-radius: 10px; margin-top: 15px; border: 1px solid #eee; }
+        .checkbox-container { display: flex; align-items: center; margin-top: 10px; text-align: left; }
+        .checkbox-container input { width: auto; margin-right: 10px; margin-top: 0; }
+        .checkbox-container label { margin-top: 0; font-weight: normal; font-size: 0.9em; }
 
-<style>
-body{
-font-family: Arial, sans-serif;
-background:#fdf7fa;
-padding:30px;
-text-align:center;
-}
-
-.container{
-background:white;
-max-width:700px;
-margin:auto;
-padding:25px;
-border-radius:18px;
-box-shadow:0 5px 15px rgba(0,0,0,0.08);
-}
-
-h1{ color:#b76e79; }
-
-label{ display:block; margin-top:15px; text-align:left; }
-
-select,input{
-width:100%;
-padding:10px;
-margin-top:5px;
-border-radius:8px;
-border:1px solid #ccc;
-}
-
-button{
-width:100%;
-padding:12px;
-margin-top:15px;
-border:none;
-border-radius:10px;
-background:#d88fa0;
-color:white;
-font-weight:bold;
-cursor:pointer;
-}
-
-button:hover{ background:#c5768b; }
-
-.resultado{
-margin-top:20px;
-background:#fff0f4;
-padding:15px;
-border-radius:10px;
-text-align:left;
-}
-</style>
+        button { width: 100%; padding: 15px; margin-top: 25px; border: none; border-radius: 10px; background: #d88fa0; color: white; font-weight: bold; font-size: 1.1em; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #c5768b; }
+        
+        .resultado { margin-top: 25px; background: #fff0f4; padding: 20px; border-radius: 10px; text-align: left; border-left: 5px solid #d88fa0; display: none; }
+        .aviso { margin-top: 30px; font-size: 0.75em; color: #999; line-height: 1.4; }
+    </style>
 </head>
-
 <body>
 
 <div class="container">
+    <h1>🌸 Quando vence meu prazo?</h1>
+    <div class="subtitulo">Simulador Prático TJPE</div>
 
-<h1>🌸 Simulador de Prazo Judicial – TJPE</h1>
-<div class="subtitulo">
-Ferramenta educativa para ajudar você a entender quando termina seu prazo processual.
-</div>
+    <label>1. Qual o assunto do processo?</label>
+    <select id="categoria" onchange="carregarSubcategorias()">
+        <option value="">Selecione...</option>
+        <option value="civil">Cível / Consumidor</option>
+        <option value="familia">Família / Alimentos</option>
+        <option value="criminal">Criminal</option>
+        <option value="violencia">Violência Doméstica</option>
+        <option value="eca">Infância e Juventude (ECA)</option>
+    </select>
 
-<label>Área do processo:</label>
-<select id="categoria" onchange="carregarSubcategorias()">
-<option value="">Selecione</option>
-<option value="civil">Cível / Consumidor</option>
-<option value="familia">Família</option>
-<option value="criminal">Criminal</option>
-<option value="violencia">Violência Doméstica</option>
-<option value="eca">Infância e Juventude</option>
-</select>
+    <label>2. O que você recebeu?</label>
+    <select id="ato">
+        <option value="">Selecione a área primeiro</option>
+    </select>
+  
+    <label>3. Quando você recebeu o papel?</label>
+    <input type="date" id="data">
 
-<label>Tipo de documento recebido:</label>
-<select id="ato"></select>
+    <div class="opcional">
+        <div class="checkbox-container">
+            <input type="checkbox" id="prazoDobro">
+            <label for="prazoDobro">Sou assistido pela <strong>Defensoria Pública</strong></label>
+        </div>
 
-<label>Data em que você recebeu o documento:</label>
-<input type="date" id="data">
+        <label style="font-size: 0.85em; margin-top: 10px;">Existe feriado municipal na sua cidade neste mês?</label>
+        <input type="date" id="feriadoMun">
+        <div style="font-size: 0.7em; color: #999; text-align: left;">(Ex: Dia do Padroeiro ou Emancipação)</div>
+    </div>
 
-<button onclick="calcular()">Calcular meu prazo</button>
+    <button onclick="calcular()">CALCULAR DATA FINAL</button>
 
-<div class="resultado" id="resultado"></div>
+    <div class="resultado" id="resultado"></div>
 
-<div class="aviso">
-Ferramenta educativa. Confirme sempre no documento oficial.<br>
-Belizza Araújo – Oficiala de Justiça TJPE
-</div>
-
+    <div class="aviso">
+        <strong>Nota:</strong> Este simulador considera os recessos do TJPE (23-30/06 e 20/12-06/01) e feriados estaduais de 2026. 
+        Sempre confirme com um advogado ou defensor público.
+    </div>
 </div>
 
 <script>
-
-// Feriados TJPE 2026
-const feriados = [
-"2026-01-01","2026-02-24","2026-02-25", "2026-03-06", "2026-04-03",
-"2026-04-21","2026-05-01","2026-06-22", "2026-09-07","2026-10-12", "2026-08-10", "2026-10-20", 
-"2026-11-02","2026-11-15","2026-12-08"
-"2026-12-25"
-];
-
-function emRecesso(dataISO){
-let inicio = new Date("2026-12-20");
-let fim = new Date("2027-01-06");
-let d = new Date(dataISO);
-return d >= inicio && d <= fim;
-}
-function emRecesso(dataISO){
-let inicio = new Date("2026-06-23");
-let fim = new Date("2027-06-30");
-let d = new Date(dataISO);
-return d >= inicio && d <= fim;
-}
-  
-function formatISO(date){
-return date.getFullYear()+"-"+
-String(date.getMonth()+1).padStart(2,'0')+"-"+
-String(date.getDate()).padStart(2,'0');
-}
-
 const prazos = {
-
-civil:{
-"Resposta inicial (contestação) (15 dias úteis)":{dias:15,tipo:"uteis",base:"CPC"},
-"Recorrer da sentença (15 dias úteis)":{dias:15,tipo:"uteis",base:"CPC"},
-"Embargos de declaração (5 dias úteis)":{dias:5,tipo:"uteis",base:"CPC"}
-"Ação de Execução judicial ou extrajudicial (contestação) (15 dias úteis)":{dias:15,tipo:"uteis",base:"CPC"},
-"Ação de Execução judicial (pagamento) (3 dias úteis)":{dias:3,tipo:"uteis",base:"CPC"}
-"Ação de Execução extrajudicial (pagamento) (15 dias úteis)":{dias:15,tipo:"uteis",base:"CPC"},
-},
-
-familia:{
-"Ação de alimentos (contestação) (15 dias úteis)":{dias:15,tipo:"uteis",base:"Lei 5.478/68"},
-"Ação de Execução de alimentos (pagamento) (3 dias úteis)":{dias:3,tipo:"uteis",base:"CPC"}
-},
-
-criminal:{
-"Resposta à acusação (10 dias corridos)":{dias:10,tipo:"corridos",base:"CPP"},
-"Apelação criminal (5 dias corridos)":{dias:5,tipo:"corridos",base:"CPP"}
-},
-
-violencia:{
-"Defesa (5 dias corridos)":{dias:5,tipo:"corridos",base:"CPP + Lei Maria da Penha"},
-"Medida protetiva (duração em média)":{dias:180,tipo:"corridos",base:"Lei 11.340/06"}
-},
-
-eca:{
-"Apelação (10 dias corridos)":{dias:10,tipo:"corridos",base:"ECA"},
-"Defesa prévia (3 dias corridos após a audiência de apresentação)":{dias:3,tipo:"corridos",base:"ECA"}
+    civil: { "Contestação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 CPC"}, "Recurso (Apelação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1003 CPC"}, "Embargos - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1023 CPC"}, "Execução (Pagamento) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 829 CPC"} },
+    familia: { "Ação de Alimentos - 15 dias": {dias: 15, tipo: "uteis", base: "CPC/Lei 5.478"}, "Execução de Alimentos - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 CPC"} },
+    criminal: { "Resposta à Acusação - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 CPP"}, "Apelação - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 CPP"} },
+    violencia: { "Defesa Protetiva - 5 dias": {dias: 5, tipo: "corridos", base: "Lei Maria da Penha"} },
+    eca: { "Defesa (Ato Infracional) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186 ECA"}, "Recurso ECA - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 ECA"} }
 };
 
-function carregarSubcategorias(){
-let cat=document.getElementById("categoria").value;
-let ato=document.getElementById("ato");
-ato.innerHTML="";
-if(!cat)return;
+const feriadosEstaduais = ["2026-01-01", "2026-02-16", "2026-02-17", "2026-02-18", "2026-03-06", "2026-04-02", "2026-04-03", "2026-04-21", "2026-05-01", "2026-06-22", "2026-06-24", "2026-07-16", "2026-08-10", "2026-09-07", "2026-10-12", "2026-10-30", "2026-11-02", "2026-11-20", "2026-12-08", "2026-12-25"];
 
-for(let item in prazos[cat]){
-let opt=document.createElement("option");
-opt.value=item;
-opt.text=item;
-ato.appendChild(opt);
-}
+function emRecesso(iso) {
+    const d = new Date(iso + "T00:00:00");
+    return (d >= new Date("2026-06-23T00:00:00") && d <= new Date("2026-06-30T00:00:00")) || 
+           (d >= new Date("2026-12-20T00:00:00") && d <= new Date("2027-01-06T00:00:00"));
 }
 
-function diasCorridos(data,dias){
-let d=new Date(data);
-d.setDate(d.getDate()+dias);
-return d;
+function carregarSubcategorias() {
+    const cat = document.getElementById("categoria").value;
+    const ato = document.getElementById("ato");
+    ato.innerHTML = '<option value="">Selecione o ato...</option>';
+    if (cat) for (let item in prazos[cat]) { let opt = document.createElement("option"); opt.value = item; opt.text = item; ato.appendChild(opt); }
 }
 
-function diasUteis(data,dias){
-let d=new Date(data);
-let cont=0;
-d.setDate(d.getDate()+1);
+function calcular() {
+    const cat = document.getElementById("categoria").value;
+    const atoSel = document.getElementById("ato").value;
+    const dataInic = document.getElementById("data").value;
+    const fMun = document.getElementById("feriadoMun").value;
+    const isDobro = document.getElementById("prazoDobro").checked;
 
-while(cont<dias){
-let dia=d.getDay();
-let iso=formatISO(d);
+    if (!cat || !atoSel || !dataInic) { alert("Preencha os campos obrigatórios."); return; }
 
-if(dia!==0 && dia!==6 &&
-!feriados.includes(iso) &&
-!emRecesso(iso)){
-cont++;
+    const info = prazos[cat][atoSel];
+    let qtdDias = isDobro ? info.dias * 2 : info.dias;
+    let dataFinal = new Date(dataInic + "T00:00:00");
+    
+    let diasContados = 0;
+    while (diasContados < qtdDias) {
+        dataFinal.setDate(dataFinal.getDate() + 1);
+        let iso = dataFinal.toISOString().split('T')[0];
+        
+        if (info.tipo === "uteis") {
+            const isFimSemana = (dataFinal.getDay() === 0 || dataFinal.getDay() === 6);
+            const isFeriado = feriadosEstaduais.includes(iso) || (fMun === iso);
+            const isRecesso = emRecesso(iso);
+            
+            if (!isFimSemana && !isFeriado && !isRecesso) diasContados++;
+        } else {
+            diasContados++;
+        }
+    }
+
+    const res = document.getElementById("resultado");
+    res.style.display = "block";
+    res.innerHTML = `<strong>📅 Seu prazo termina em: ${dataFinal.toLocaleDateString('pt-BR')}</strong><br>
+    <small>Contagem: ${qtdDias} ${info.tipo === "uteis" ? "dias úteis" : "dias corridos"}.</small>`;
 }
-
-if(cont<dias){ d.setDate(d.getDate()+1); }
-}
-return d;
-}
-
-function calcular(){
-let cat=document.getElementById("categoria").value;
-let ato=document.getElementById("ato").value;
-let data=document.getElementById("data").value;
-
-if(!cat||!ato||!data){
-alert("Por favor, preencha todos os campos.");
-return;
-}
-
-let info=prazos[cat][ato];
-let final;
-
-if(info.tipo==="uteis"){
-final=diasUteis(data,info.dias);
-}else{
-final=diasCorridos(data,info.dias);
-}
-
-let hoje=new Date();
-let vencido=final<hoje;
-
-document.getElementById("resultado").innerHTML=
-"<strong>Data estimada para o fim do prazo:</strong> "+
-final.toLocaleDateString("pt-BR")+
-(vencido?"<div class='alerta'>Atenção: o prazo pode já estar vencido.</div>":"")+
-"<br><br><strong>Tipo de contagem:</strong> "+
-(info.tipo==="uteis"?"Dias úteis (não conta sábado, domingo e feriado)":"Dias corridos")+
-"<br><strong>Base legal:</strong> "+info.base+
-"<br><br>Se tiver dúvida, procure orientação jurídica imediatamente.";
-}
-
 </script>
-
 </body>
 </html>
-
-
