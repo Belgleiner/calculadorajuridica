@@ -47,19 +47,23 @@
     <label>Data da citação/intimação:</label>
     <input type="date" id="data">
 
-    <div class="checkbox-container">
-        <input type="checkbox" id="prazoDobro">
-        <label for="prazoDobro">Sou assistido pela <strong>Defensoria Pública</strong> (Prazo em Dobro)</label>
-    </div>
+    <div class="opcional">
+        <div class="checkbox-container">
+            <input type="checkbox" id="prazoDobro">
+            <label for="prazoDobro">Sou assistido pela <strong>Defensoria Pública</strong></label>
+        </div>
 
-<label style="font-size: 0.85em; margin-top: 10px;">Existe feriado municipal na sua cidade neste mês?</label>
+        <label style="font-size: 0.85em; margin-top: 10px;">Existe feriado municipal na sua cidade neste mês?</label>
         <input type="date" id="feriadoMun">
         <div style="font-size: 0.7em; color: #999; text-align: left;">(Ex: Dia do Padroeiro ou Emancipação)</div>
     </div>
-    
-    <button onclick="calcular()">Calcular Prazo Final</button>
+
+    <button class="btn-calc" onclick="calcular()">CALCULAR DATA FINAL</button>
 
     <div class="resultado" id="resultado"></div>
+    <button class="btn-whatsapp" id="btnWhatsapp" onclick="enviarWhatsapp()">📲 Enviar Resumo p/ Advogado</button>
+
+    <div class="aviso">
 
     <div class="aviso">
         <strong>Atenção:</strong> Não inclui os feriados municipais.<br>
@@ -208,4 +212,5 @@ function enviarWhatsapp() {
 </script>
 </body>
 </html>
+
 
