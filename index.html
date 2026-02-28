@@ -52,12 +52,17 @@
         <label for="prazoDobro">Sou assistido pela <strong>Defensoria Pública</strong> (Prazo em Dobro)</label>
     </div>
 
+<label style="font-size: 0.85em; margin-top: 10px;">Existe feriado municipal na sua cidade neste mês?</label>
+        <input type="date" id="feriadoMun">
+        <div style="font-size: 0.7em; color: #999; text-align: left;">(Ex: Dia do Padroeiro ou Emancipação)</div>
+    </div>
+    
     <button onclick="calcular()">Calcular Prazo Final</button>
 
     <div class="resultado" id="resultado"></div>
 
     <div class="aviso">
-        <strong>Atenção:</strong> Inclui Recesso Junino (23-30/06) e Fim de Ano (20/12-06/01).<br>
+        <strong>Atenção:</strong> Não inclui os feriados municipais.<br>
         Esta ferramenta é informativa e baseada no calendário de 2026.<br>
         <strong>Belizza Araújo – Oficiala de Justiça TJPE</strong>
     </div>
@@ -154,6 +159,53 @@ function calcular() {
         </p>
     `;
 }
+let resumoParaWhats = "";
+
+function calcular() {
+    const cat = document.getElementById("categoria").value;
+    const atoSel = document.getElementById("ato").value;
+    const dataInic = document.getElementById("data").value;
+    const fMun = document.getElementById("feriadoMun").value;
+    const isDobro = document.getElementById("prazoDobro").checked;
+
+    if (!cat || !atoSel || !dataInic) { alert("Preencha os campos obrigatórios."); return; }
+
+    const info = prazos[cat][atoSel];
+    let qtdDias = isDobro ? info.dias * 2 : info.dias;
+    let dataFinal = new Date(dataInic + "T00:00:00");
+    
+    let diasContados = 0;
+    while (diasContados < qtdDias) {
+        dataFinal.setDate(dataFinal.getDate() + 1);
+        let iso = dataFinal.toISOString().split('T')[0];
+        
+        if (info.tipo === "uteis") {
+            const isFimSemana = (dataFinal.getDay() === 0 || dataFinal.getDay() === 6);
+            const isFeriado = feriadosEstaduais.includes(iso) || (fMun === iso);
+            const isRecesso = emRecesso(iso);
+            if (!isFimSemana && !isFeriado && !isRecesso) diasContados++;
+        } else {
+            diasContados++;
+        }
+    }
+
+    const res = document.getElementById("resultado");
+    const btnW = document.getElementById("btnWhatsapp");
+    const dataFinalFormatada = dataFinal.toLocaleDateString('pt-BR');
+    
+    res.style.display = "block";
+    btnW.style.display = "block";
+    
+    res.innerHTML = `<strong>📅 Seu prazo termina em: ${dataFinalFormatada}</strong><br>
+    <small>Contagem: ${qtdDias} ${info.tipo === "uteis" ? "dias úteis" : "dias corridos"}.</small>`;
+    
+    resumoParaWhats = `Olá! Recebi um mandado judicial e calculei o meu prazo no simulador da Oficiala Belizza Araújo. %0A%0A*Resumo do meu prazo:*%0A📌 *Ato:* ${atoSel}%0A📅 *Recebido em:* ${new Date(dataInic + "T00:00:00").toLocaleDateString('pt-BR')}%0A⚖️ *Prazo final estimado:* ${dataFinalFormatada}%0A%0APreciso de orientação jurídica.`;
+}
+
+function enviarWhatsapp() {
+    window.open(`https://api.whatsapp.com/send?text=${resumoParaWhats}`, '_blank');
+}
 </script>
 </body>
 </html>
+
