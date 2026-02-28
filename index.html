@@ -2,36 +2,158 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Simulador Jurídico TJPE - Belizza Araújo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Prazos – Belizza Araújo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fdf7fa; padding: 20px; text-align: center; color: #444; }
-        .container { background: white; max-width: 600px; margin: auto; padding: 30px; border-radius: 18px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-        h1 { color: #b76e79; margin-bottom: 5px; }
-        .subtitulo { font-size: 0.9em; color: #888; margin-bottom: 20px; }
-        label { display: block; margin-top: 15px; text-align: left; font-weight: bold; color: #7a4a52; }
-        select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
-        
-        /* Estilo para o Prazo em Dobro */
-        .checkbox-container { display: flex; align-items: center; margin-top: 20px; background: #fff5f7; padding: 10px; border-radius: 8px; border: 1px dashed #d88fa0; }
-        .checkbox-container input { width: auto; margin-right: 10px; margin-top: 0; cursor: pointer; }
-        .checkbox-container label { margin-top: 0; font-size: 0.9em; cursor: pointer; }
+        :root {
+            --cor-base: #fdfaf8; /* Off-white de fundo */
+            --cor-rose: #d4a3a3; /* Rose Gold principal */
+            --cor-texto: #5a4a4a; /* Marrom acinzentado suave */
+            --cor-detalhe: #b08d8d; /* Nude escuro */
+            --cor-input: #ffffff;
+        }
 
-        button { width: 100%; padding: 15px; margin-top: 25px; border: none; border-radius: 10px; background: #d88fa0; color: white; font-weight: bold; font-size: 1.1em; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #c5768b; }
-        .resultado { margin-top: 25px; background: #fff0f4; padding: 20px; border-radius: 10px; text-align: left; border-left: 5px solid #d88fa0; display: none; }
-        .alerta { color: #d9534f; font-weight: bold; margin-top: 10px; padding: 10px; background: #f9d6d5; border-radius: 5px; }
-        .aviso { margin-top: 30px; font-size: 0.8em; color: #999; line-height: 1.5; }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--cor-base); 
+            padding: 40px 20px; 
+            color: var(--cor-texto);
+            margin: 0;
+        }
+
+        .container { 
+            background: #ffffff; 
+            max-width: 420px; 
+            margin: auto; 
+            padding: 40px 30px; 
+            border-radius: 30px; 
+            box-shadow: 0 15px 35px rgba(212, 163, 163, 0.15); 
+            border: 1px solid rgba(212, 163, 163, 0.2);
+            text-align: center;
+        }
+
+        h1 { 
+            color: var(--cor-rose); 
+            font-weight: 300; 
+            letter-spacing: 4px; 
+            font-size: 1.4em; 
+            text-transform: uppercase; 
+            margin-bottom: 5px; 
+        }
+
+        .subtitulo { 
+            font-size: 0.75em; 
+            color: var(--cor-detalhe); 
+            margin-bottom: 35px; 
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        label { 
+            display: block; 
+            margin-top: 20px; 
+            text-align: left; 
+            font-size: 0.7em; 
+            font-weight: 600; 
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--cor-detalhe);
+        }
+        
+        /* TODOS OS ELEMENTOS COM A MESMA ALTURA E DESIGN */
+        select, input, .btn-calc, .btn-whatsapp { 
+            width: 100%; 
+            height: 50px; 
+            padding: 0 15px; 
+            margin-top: 8px; 
+            border-radius: 12px; 
+            border: 1px solid #efe5e5; 
+            box-sizing: border-box; 
+            font-size: 14px;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--cor-input);
+            color: var(--cor-texto);
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--cor-rose);
+            outline: none;
+        }
+
+        .opcional { 
+            background: #fcf6f6; 
+            padding: 20px; 
+            border-radius: 15px; 
+            margin-top: 25px; 
+        }
+
+        .checkbox-container { 
+            display: flex; 
+            align-items: center; 
+            text-align: left; 
+            font-size: 0.85em;
+        }
+
+        .checkbox-container input { width: 20px; height: 20px; margin-right: 12px; cursor: pointer; }
+
+        .btn-calc { 
+            margin-top: 30px; 
+            border: none; 
+            background: var(--cor-rose); 
+            color: white; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            cursor: pointer; 
+        }
+
+        .btn-calc:hover { background: var(--cor-detalhe); }
+
+        .resultado { 
+            margin-top: 25px; 
+            padding: 20px; 
+            border-radius: 15px; 
+            border: 1px solid var(--cor-rose); 
+            display: none; 
+            background: #fffafa;
+            color: var(--cor-texto);
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .btn-whatsapp { 
+            background: #6bb08a; /* Verde menta suave para não chocar com o Rose */
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: 600; 
+            margin-top: 15px; 
+            display: none; 
+            text-decoration: none; 
+            line-height: 50px;
+            text-transform: uppercase;
+        }
+
+        .aviso { 
+            margin-top: 40px; 
+            font-size: 0.65em; 
+            color: #b9a9a9; 
+            line-height: 1.5; 
+            text-transform: none;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🌸 Simulador de Prazos – TJPE</h1>
-    <div class="subtitulo">Ferramenta educativa para auxílio na contagem processual.</div>
+    <h1>BELIZZA ARAÚJO</h1>
+    <div class="subtitulo">Oficiala de Justiça • TJPE</div>
 
-    <label>Área do processo:</label>
-    <select id="categoria" onchange="carregarSubcategorias()">
-        <option value="">Selecione a área...</option>
+    <label>Área do Processo</label>
+    <select id="categoria" onchange="atualizarAtos()">
+        <option value="">Selecione...</option>
         <option value="civil">Cível / Consumidor</option>
         <option value="familia">Família / Alimentos</option>
         <option value="criminal">Criminal</option>
@@ -39,122 +161,117 @@
         <option value="eca">Infância e Juventude (ECA)</option>
     </select>
 
-    <label>Tipo de documento recebido:</label>
+    <label>O que você recebeu?</label>
     <select id="ato">
-        <option value="">Selecione a área primeiro</option>
+        <option value="">Aguardando área...</option>
     </select>
   
-    <label>Data da citação/intimação:</label>
+    <label>Data de Recebimento</label>
     <input type="date" id="data">
 
-    <div class="checkbox-container">
-        <input type="checkbox" id="prazoDobro">
-        <label for="prazoDobro">Sou assistido pela <strong>Defensoria Pública</strong> (Prazo em Dobro)</label>
+    <div class="opcional">
+        <div class="checkbox-container">
+            <input type="checkbox" id="prazoDobro">
+            <label for="prazoDobro">Sou assistido pela Defensoria Pública</label>
+        </div>
     </div>
 
-    <button onclick="calcular()">Calcular Prazo Final</button>
+    <button class="btn-calc" onclick="calcular()">Calcular Prazo</button>
 
-    <div class="resultado" id="resultado"></div>
+    <div id="resultado" class="resultado"></div>
+    <button id="btnWhatsapp" class="btn-whatsapp" onclick="enviarWhatsapp()">📲 Enviar para o Advogado</button>
 
     <div class="aviso">
-        <strong>Atenção:</strong> Inclui Recesso Junino (23-30/06) e Fim de Ano (20/12-06/01). Não inclui os feriados municipais!<br>
-        Esta ferramenta é informativa e baseada no calendário de 2026.<br>
-        <strong>Belizza Araújo – Oficiala de Justiça TJPE</strong>
+        *Cálculo baseado no calendário judiciário de 2026. <br>
+        Sempre consulte um profissional jurídico.
     </div>
 </div>
 
 <script>
-const prazos = {
-    civil: {
-        "Resposta inicial (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 do CPC"},
-        "Recorrer da sentença (Apelação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
-        "Embargos de Declaração - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1.023 do CPC"},
-        "Execução Extrajudicial (Pagamento) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 829 do CPC"}
+// Dados organizados para evitar erros de carregamento
+const baseDePrazos = {
+    civil: { 
+        "Contestação (15 dias úteis)": {d: 15, t: "uteis"}, 
+        "Apelação (15 dias úteis)": {d: 15, t: "uteis"}, 
+        "Embargos (5 dias úteis)": {d: 5, t: "uteis"},
+        "Pagamento (3 dias úteis)": {d: 3, t: "uteis"}
     },
-    familia: {
-        "Ação de Alimentos (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC / Lei 5.478/68"},
-        "Execução de Alimentos (Pagamento) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"}
+    familia: { 
+        "Contestação Alimentos (15 dias úteis)": {d: 15, t: "uteis"}, 
+        "Pagar Pensão (3 dias úteis)": {d: 3, t: "uteis"} 
     },
-    criminal: {
-        "Resposta à Acusação - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 do CPP"},
-        "Apelação Criminal - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
+    criminal: { 
+        "Resposta Acusação (10 dias corridos)": {d: 10, t: "corridos"}, 
+        "Apelação (5 dias corridos)": {d: 5, t: "corridos"} 
     },
-    violencia: {
-        "Defesa em Medida Protetiva - 5 dias": {dias: 5, tipo: "corridos", base: "Lei Maria da Penha"}
+    violencia: { 
+        "Defesa Protetiva (5 dias corridos)": {d: 5, t: "corridos"} 
     },
-    eca: {
-        "Defesa Prévia (Ato Infracional) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, §3º do ECA"},
-        "Recurso no ECA - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
+    eca: { 
+        "Defesa ECA (3 dias corridos)": {d: 3, t: "corridos"}, 
+        "Recurso ECA (10 dias corridos)": {d: 10, t: "corridos"} 
     }
 };
 
-const feriados = [
-    "2026-01-01", "2026-02-16", "2026-02-17", "2026-02-18", "2026-03-06", 
-    "2026-04-02", "2026-04-03", "2026-04-21", "2026-05-01", "2026-06-22", 
-    "2026-06-24", "2026-07-16", "2026-08-10", "2026-09-07", "2026-10-12", 
-    "2026-10-30", "2026-11-02", "2026-11-20", "2026-12-08", "2026-12-25"
-];
+const feriados2026 = ["2026-01-01", "2026-02-16", "2026-02-17", "2026-02-18", "2026-03-06", "2026-04-02", "2026-04-03", "2026-04-21", "2026-05-01", "2026-06-22", "2026-06-24", "2026-07-16", "2026-08-10", "2026-09-07", "2026-10-12", "2026-10-30", "2026-11-02", "2026-11-20", "2026-12-08", "2026-12-25"];
 
-function emRecesso(dataISO) {
-    const d = new Date(dataISO + "T00:00:00");
-    const juninoInic = new Date("2026-06-23T00:00:00");
-    const juninoFim = new Date("2026-06-30T00:00:00");
-    const fimAnoInic = new Date("2026-12-20T00:00:00");
-    const fimAnoFim = new Date("2027-01-06T00:00:00");
-    return (d >= juninoInic && d <= juninoFim) || (d >= fimAnoInic && d <= fimAnoFim);
-}
-
-function carregarSubcategorias() {
+function atualizarAtos() {
     const cat = document.getElementById("categoria").value;
-    const ato = document.getElementById("ato");
-    ato.innerHTML = '<option value="">Selecione o ato...</option>';
-    if (!cat) return;
-    for (let item in prazos[cat]) {
-        let opt = document.createElement("option");
-        opt.value = item; opt.text = item; ato.appendChild(opt);
+    const atoSelect = document.getElementById("ato");
+    atoSelect.innerHTML = '<option value="">Selecione o ato...</option>';
+    
+    if (cat && baseDePrazos[cat]) {
+        for (let chave in baseDePrazos[cat]) {
+            let opt = document.createElement("option");
+            opt.value = chave;
+            opt.text = chave;
+            atoSelect.appendChild(opt);
+        }
     }
 }
+
+let msgWhats = "";
 
 function calcular() {
     const cat = document.getElementById("categoria").value;
-    const atoSel = document.getElementById("ato").value;
-    const dataInicial = document.getElementById("data").value;
-    const isDobro = document.getElementById("prazoDobro").checked;
+    const ato = document.getElementById("ato").value;
+    const dataVal = document.getElementById("data").value;
+    const dobro = document.getElementById("prazoDobro").checked;
 
-    if (!cat || !atoSel || !dataInicial) {
-        alert("Preencha todos os campos."); return;
-    }
+    if (!cat || !ato || !dataVal) { alert("Por favor, preencha todos os campos."); return; }
 
-    const info = prazos[cat][atoSel];
-    let qtdDias = isDobro ? info.dias * 2 : info.dias;
-    let dataFinal = new Date(dataInicial + "T00:00:00");
-    
-    if (info.tipo === "uteis") {
-        let cont = 0;
-        while (cont < qtdDias) {
-            dataFinal.setDate(dataFinal.getDate() + 1);
-            let iso = dataFinal.toISOString().split('T')[0];
-            if (dataFinal.getDay() !== 0 && dataFinal.getDay() !== 6 && !feriados.includes(iso) && !emRecesso(iso)) {
-                cont++;
-            }
+    const info = baseDePrazos[cat][ato];
+    let diasTotais = dobro ? info.d * 2 : info.d;
+    let dataF = new Date(dataVal + "T00:00:00");
+    let c = 0;
+
+    while (c < diasTotais) {
+        dataF.setDate(dataF.getDate() + 1);
+        let iso = dataF.toISOString().split('T')[0];
+        
+        if (info.t === "uteis") {
+            let fds = (dataF.getDay() === 0 || dataF.getDay() === 6);
+            let fer = feriados2026.includes(iso);
+            let recJun = (iso >= "2026-06-23" && iso <= "2026-06-30");
+            let recDez = (iso >= "2026-12-20" || (iso <= "2027-01-06" && iso >= "2027-01-01"));
+            
+            if (!fds && !fer && !recJun && !recDez) c++;
+        } else {
+            c++;
         }
-    } else {
-        dataFinal.setDate(dataFinal.getDate() + qtdDias);
     }
 
-    const resDiv = document.getElementById("resultado");
-    const hoje = new Date(); hoje.setHours(0,0,0,0);
-    resDiv.style.display = "block";
-    resDiv.innerHTML = `
-        <strong>📅 Prazo Final: ${dataFinal.toLocaleDateString('pt-BR')}</strong>
-        ${dataFinal < hoje ? '<div class="alerta">⚠️ Prazo possivelmente vencido!</div>' : ''}
-        <p style="margin-top:10px; font-size:0.85em;">
-            <strong>Contagem:</strong> ${qtdDias} ${info.tipo === "uteis" ? "dias úteis" : "dias corridos"} ${isDobro ? "(Dobro aplicado)" : ""}<br>
-            <strong>Base:</strong> ${info.base}
-        </p>
-    `;
+    const resData = dataF.toLocaleDateString('pt-BR');
+    document.getElementById("resultado").style.display = "block";
+    document.getElementById("resultado").innerHTML = `⚖️ <strong>Prazo Final: ${resData}</strong><br><small>(${diasTotais} dias ${info.t})</small>`;
+    
+    document.getElementById("btnWhatsapp").style.display = "block";
+    msgWhats = `Olá! Fiz o cálculo do meu prazo jurídico: %0A📌 Ato: ${ato} %0A⚖️ Vencimento: ${resData}`;
+}
+
+function enviarWhatsapp() {
+    window.open("https://api.whatsapp.com/send?text=" + msgWhats, '_blank');
 }
 </script>
 </body>
 </html>
-
