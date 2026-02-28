@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Simulador Jurídico TJPE - Belizza Araújo</title>
+    <title>Simulador de prazos - por Belizza Araújo</title>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #fdf7fa; padding: 20px; text-align: center; color: #444; }
         .container { background: white; max-width: 600px; margin: auto; padding: 30px; border-radius: 18px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
@@ -81,3 +81,107 @@ const prazos = {
     familia: {
         "Ação de Alimentos (Defesa) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC / Lei 5.478/68"},
         "Execução de Alimentos (Pagar ou Justificar) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"}
+    },
+    imobiliario: {
+        "Despejo (Defesa) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 8.245/91"},
+        "Notificação para Desocupar - 30 dias": {dias: 30, tipo: "corridos", base: "Lei do Inquilinato"}
+    },
+    despachos: {
+        "Cumprir Ordem do Juiz - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218, §3º do CPC"},
+        "Cumprir Ordem do Juiz - 10 dias": {dias: 10, tipo: "uteis", base: "Prazo assinalado"},
+        "Cumprir Ordem do Juiz - 15 dias": {dias: 15, tipo: "uteis", base: "Prazo assinalado"}
+    },
+    urgentes: {
+        "Defesa em Busca e Apreensão - 15 dias": {dias: 15, tipo: "uteis", base: "Dec-Lei 911/69"},
+        "Pagar para reaver veículo - 5 dias": {dias: 5, tipo: "corridos", base: "Dec-Lei 911/69"}
+    },
+    criminal: {
+        "Resposta à Acusação (Defesa) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 do CPP"},
+        "Apelação Criminal - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
+    },
+    violencia: {
+        "Defesa em Medida Protetiva - 5 dias": {dias: 5, tipo: "corridos", base: "Lei Maria da Penha"}
+    },
+    eca: {
+        "Defesa Prévia (conta da audiência) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, §3º do ECA"},
+        "Recurso no ECA - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
+    }
+};
+
+const feriados = [
+    "2026-01-01", "2026-02-16", "2026-02-17", "2026-02-18", "2026-03-06", 
+    "2026-04-02", "2026-04-03", "2026-04-21", "2026-05-01", "2026-06-22", 
+    "2026-06-24", "2026-07-16", "2026-08-10", "2026-09-07", "2026-10-12", 
+    "2026-10-30", "2026-11-02", "2026-11-20", "2026-12-08", "2026-12-25"
+];
+
+function emRecesso(dataISO) {
+    const d = new Date(dataISO + "T00:00:00");
+    const juninoInic = new Date("2026-06-23T00:00:00");
+    const juninoFim = new Date("2026-06-30T00:00:00");
+    const fimAnoInic = new Date("2026-12-20T00:00:00");
+    const fimAnoFim = new Date("2027-01-06T00:00:00");
+    return (d >= juninoInic && d <= juninoFim) || (d >= fimAnoInic && d <= fimAnoFim);
+}
+
+function carregarSubcategorias() {
+    const cat = document.getElementById("categoria").value;
+    const ato = document.getElementById("ato");
+    ato.innerHTML = '<option value="">Selecione o documento...</option>';
+    if (!cat || !prazos[cat]) return;
+    for (let item in prazos[cat]) {
+        let opt = document.createElement("option");
+        opt.value = item;
+        opt.text = item;
+        ato.appendChild(opt);
+    }
+}
+
+function calcular() {
+    const cat = document.getElementById("categoria").value;
+    const atoSel = document.getElementById("ato").value;
+    const dataInicInput = document.getElementById("data").value;
+    const isDobro = document.getElementById("prazoDobro").checked;
+
+    if (!cat || !atoSel || !dataInicInput) {
+        alert("Por favor, preencha todos os campos.");
+        return;
+    }
+
+    const info = prazos[cat][atoSel];
+    let qtdDias = isDobro ? info.dias * 2 : info.dias;
+    let dataFinal = new Date(dataInicInput + "T00:00:00");
+    
+    if (info.tipo === "uteis") {
+        let cont = 0;
+        while (cont < qtdDias) {
+            dataFinal.setDate(dataFinal.getDate() + 1);
+            let iso = dataFinal.toISOString().split('T')[0];
+            if (dataFinal.getDay() !== 0 && dataFinal.getDay() !== 6 && !feriados.includes(iso) && !emRecesso(iso)) {
+                cont++;
+            }
+        }
+    } else {
+        dataFinal.setDate(dataFinal.getDate() + qtdDias);
+    }
+
+    const resDiv = document.getElementById("resultado");
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    resDiv.style.display = "block";
+    
+    resDiv.innerHTML = `
+        <strong>📅 Prazo Final: ${dataFinal.toLocaleDateString('pt-BR')}</strong>
+        ${dataFinal < hoje ? '<div class="alerta">⚠️ Atenção: Prazo possivelmente vencido!</div>' : ''}
+        <div class="dica-leigo">
+            <strong>Dica da Oficiala:</strong><br>
+            Este prazo é contado em <strong>${info.tipo}</strong>. <br>
+            Procure um advogado ou a Defensoria Pública imediatamente portando este documento.
+        </div>
+        <p style="margin-top:10px; font-size:0.8em; color: #666;">
+            Fundamento: ${info.base} | Contagem: ${qtdDias} dias.
+        </p>
+    `;
+}
+</script>
+</body>
+</html>
