@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Simulador de Prazo Judicial – TJPE</title>
+
+<style>
+body{
+font-family: Arial, sans-serif;
+background:#fff6f9;
+padding:30px;
+text-align:center;
+}
+
+.container{
+background:white;
+max-width:550px;
+margin:auto;
+padding:25px;
+border-radius:18px;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+}
+
+h1{
+color:#c06c84;
+}
+
+.pergunta{
+margin-top:15px;
+text-align:left;
+}
+
+select,input{
+width:100%;
+padding:12px;
+margin-top:8px;
+border-radius:10px;
+border:1px solid #ddd;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:15px;
+border:none;
+border-radius:12px;
+background:#e295a6;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+background:#d87a92;
+}
+
+.resultado{
+margin-top:20px;
+background:#fff0f4;
+padding:15px;
+border-radius:12px;
+}
+
+.whatsapp{
+background:#25D366;
+}
+
+.aviso{
+margin-top:20px;
+font-size:12px;
+color:#666;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🌸 Simulador de Prazo Judicial – TJPE</h1>
+
+<div class="pergunta">
+<label>O que você recebeu?</label>
+<select id="tipo">
+<option value="15-uteis-Contestação:Você foi citado e precisa apresentar defesa. Procure advogado com urgência.">
+Citação para responder processo
+</option>
+
+<option value="5-uteis-Embargos:Prazo para corrigir erro ou omissão da decisão.">
+Intimação de decisão
+</option>
+
+<option value="10-corridos-Resposta Criminal:Defesa inicial em processo criminal. Procure defensor imediatamente.">
+Processo criminal
+</option>
+
+<option value="5-corridos-Recurso Criminal:Prazo para recorrer decisão criminal.">
+Recurso criminal
+</option>
+
+<option value="30-corridos-Apelação:Prazo para recorrer decisão judicial.">
+Deseja recorrer decisão
+</option>
+</select>
+</div>
+
+<div class="pergunta">
+<label>Qual foi a data do recebimento?</label>
+<input type="date" id="data">
+</div>
+
+<button onclick="calcular()">Calcular Prazo</button>
+
+<div class="resultado" id="resultado"></div>
+
+<button class="whatsapp" onclick="abrirWhatsApp()">📲 Falar pelo WhatsApp</button>
+
+<div class="aviso">
+Ferramenta educativa. Confirme sempre no documento oficial.<br>
+Belizza Araújo – Oficiala de Justiça TJPE
+</div>
+
+</div>
+
+<script>
+
+// Feriados nacionais fixos (2026 exemplo)
+let feriados = [
+"2026-01-01",
+"2026-04-21",
+"2026-05-01",
+"2026-09-07",
+"2026-10-12",
+"2026-11-02",
+"2026-11-15",
+"2026-12-25"
+];
+
+function diasCorridos(data, dias){
+let d = new Date(data);
+d.setDate(d.getDate()+dias);
+return d;
+}
+
+function diasUteis(data, dias){
+let d = new Date(data);
+let cont=0;
+
+while(cont<dias){
+d.setDate(d.getDate()+1);
+let diaSemana = d.getDay();
+let iso = d.toISOString().split("T")[0];
+
+if(diaSemana!==0 && diaSemana!==6 && !feriados.includes(iso)){
+cont++;
+}
+}
+return d;
+}
+
+function calcular(){
+
+let dataInicial = document.getElementById("data").value;
+let tipo = document.getElementById("tipo").value;
+
+if(!dataInicial){
+alert("Informe a data do recebimento.");
+return;
+}
+
+let partes = tipo.split("-");
+let dias = parseInt(partes[0]);
+let modo = partes[1];
+let explicacao = partes[2];
+
+let final;
+
+if(modo==="uteis"){
+final = diasUteis(dataInicial,dias);
+}else{
+final = diasCorridos(dataInicial,dias);
+}
+
+let hoje = new Date();
+let vencido = final < hoje;
+
+document.getElementById("resultado").innerHTML =
+"📅 Prazo estimado: "+final.toLocaleDateString("pt-BR")+
+(vencido ? "<br><span style='color:red;'>Atenção: prazo possivelmente vencido.</span>" : "")+
+"<br><br>ℹ "+explicacao;
+
+}
+
+function abrirWhatsApp(){
+window.open("https://wa.me/5581989919256");
+}
+
+</script>
+
+</body>
+</html>
