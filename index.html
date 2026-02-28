@@ -61,7 +61,7 @@ text-align:left;
 
 <div class="container">
 
-<h1>Portal de Orientação sobre Prazos Judiciais</h1>
+<h1>🌸 Simulador de Prazo Judicial – TJPE</h1>
 <div class="subtitulo">
 Ferramenta educativa para ajudar você a entender quando termina seu prazo processual.
 </div>
@@ -86,8 +86,9 @@ Ferramenta educativa para ajudar você a entender quando termina seu prazo proce
 
 <div class="resultado" id="resultado"></div>
 
-<div class="rodape">
-Esta é uma ferramenta informativa. Sempre confirme no processo oficial ou procure um advogado ou a Defensoria Pública.
+<div class="aviso">
+Ferramenta educativa. Confirme sempre no documento oficial.<br>
+Belizza Araújo – Oficiala de Justiça TJPE
 </div>
 
 </div>
@@ -96,9 +97,9 @@ Esta é uma ferramenta informativa. Sempre confirme no processo oficial ou procu
 
 // Feriados TJPE 2026
 const feriados = [
-"2026-01-01","2026-02-24","2026-02-25","2026-04-03",
-"2026-04-21","2026-05-01","2026-06-04","2026-06-24",
-"2026-09-07","2026-10-12","2026-11-02","2026-11-15",
+"2026-01-01","2026-02-24","2026-02-25", "2026-03-06", "2026-04-03",
+"2026-04-21","2026-05-01","2026-06-22", "2026-09-07","2026-10-12", "2026-08-10", "2026-10-20", 
+"2026-11-02","2026-11-15","2026-12-08"
 "2026-12-25"
 ];
 
@@ -108,7 +109,13 @@ let fim = new Date("2027-01-06");
 let d = new Date(dataISO);
 return d >= inicio && d <= fim;
 }
-
+function emRecesso(dataISO){
+let inicio = new Date("2026-06-23");
+let fim = new Date("2027-06-30");
+let d = new Date(dataISO);
+return d >= inicio && d <= fim;
+}
+  
 function formatISO(date){
 return date.getFullYear()+"-"+
 String(date.getMonth()+1).padStart(2,'0')+"-"+
@@ -118,14 +125,17 @@ String(date.getDate()).padStart(2,'0');
 const prazos = {
 
 civil:{
-"Responder processo (15 dias úteis)":{dias:15,tipo:"uteis",base:"CPC"},
+"Resposta inicial (contestação) (15 dias úteis)":{dias:15,tipo:"uteis",base:"CPC"},
 "Recorrer da sentença (15 dias úteis)":{dias:15,tipo:"uteis",base:"CPC"},
 "Embargos de declaração (5 dias úteis)":{dias:5,tipo:"uteis",base:"CPC"}
+"Ação de Execução judicial ou extrajudicial (contestação) (15 dias úteis)":{dias:15,tipo:"uteis",base:"CPC"},
+"Ação de Execução judicial (pagamento) (3 dias úteis)":{dias:3,tipo:"uteis",base:"CPC"}
+"Ação de Execução extrajudicial (pagamento) (15 dias úteis)":{dias:15,tipo:"uteis",base:"CPC"},
 },
 
 familia:{
-"Ação de alimentos (15 dias úteis)":{dias:15,tipo:"uteis",base:"Lei 5.478/68"},
-"Execução de alimentos (15 dias úteis)":{dias:15,tipo:"uteis",base:"CPC"}
+"Ação de alimentos (contestação) (15 dias úteis)":{dias:15,tipo:"uteis",base:"Lei 5.478/68"},
+"Ação de Execução de alimentos (pagamento) (3 dias úteis)":{dias:3,tipo:"uteis",base:"CPC"}
 },
 
 criminal:{
@@ -134,13 +144,13 @@ criminal:{
 },
 
 violencia:{
-"Recurso (5 dias corridos)":{dias:5,tipo:"corridos",base:"CPP + Lei Maria da Penha"},
-"Medida protetiva (decisão em até 48h)":{dias:2,tipo:"corridos",base:"Lei 11.340/06"}
+"Defesa (5 dias corridos)":{dias:5,tipo:"corridos",base:"CPP + Lei Maria da Penha"},
+"Medida protetiva (duração em média)":{dias:180,tipo:"corridos",base:"Lei 11.340/06"}
 },
 
 eca:{
 "Apelação (10 dias corridos)":{dias:10,tipo:"corridos",base:"ECA"},
-"Defesa prévia (3 dias corridos)":{dias:3,tipo:"corridos",base:"ECA"}
+"Defesa prévia (3 dias corridos após a audiência de apresentação)":{dias:3,tipo:"corridos",base:"ECA"}
 }
 
 };
@@ -221,4 +231,5 @@ final.toLocaleDateString("pt-BR")+
 
 </body>
 </html>
+
 
