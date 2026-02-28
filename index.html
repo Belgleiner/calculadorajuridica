@@ -77,7 +77,7 @@ Ferramenta educativa para ajudar você a entender quando termina seu prazo proce
 </select>
 
 <label>Tipo de documento recebido:</label>
-<select id="ato"></select>
+<select id="ato">
 
 civil:{
 "Resposta inicial (contestação) (15 dias úteis)":{dias:15,tipo:"uteis",base:"CPC"},
@@ -107,6 +107,8 @@ eca:{
 "Apelação (10 dias corridos)":{dias:10,tipo:"corridos",base:"ECA"},
 "Defesa prévia (3 dias corridos após a audiência de apresentação)":{dias:3,tipo:"corridos",base:"ECA"}
 };
+
+</select>
   
 <label>Data em que você recebeu o documento:</label>
 <input type="date" id="data">
@@ -258,6 +260,7 @@ final.toLocaleDateString("pt-BR")+
 
 </body>
 </html>
+
 
 
 
