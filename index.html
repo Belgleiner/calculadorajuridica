@@ -29,11 +29,15 @@
     <h1>🌸 Simulador de Prazos – TJPE</h1>
     <div class="subtitulo">Ferramenta educativa para auxílio na contagem processual.</div>
 
-    <label>Área do processo:</label>
+ <label>Área do processo:</label>
     <select id="categoria" onchange="carregarSubcategorias()">
         <option value="">Selecione a área...</option>
-        <option value="civil">Cível / Consumidor</option>
-        <option value="familia">Família / Alimentos</option>
+        <option value="civil">Cível (Justiça Comum)</option>
+        <option value="juizado">Juizado Especial (Pequenas Causas)</option>
+        <option value="familia">Família - Alimentos</option>
+        <option value="imobiliario">Imobiliário (Despejo/Saída)</option>
+        <option value="despachos">Ordens do Juiz (Despachos)</option>
+        <option value="urgentes">Busca e Apreensão</option>
         <option value="criminal">Criminal</option>
         <option value="violencia">Violência Doméstica</option>
         <option value="eca">Infância e Juventude (ECA)</option>
@@ -66,26 +70,43 @@
 <script>
 const prazos = {
     civil: {
-        "Resposta inicial (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 do CPC"},
-        "Recorrer da sentença (Apelação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
+        "Defesa (contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 e 523 do CPC"},
+        "Recurso de Sentença (Apelação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
         "Embargos de Declaração - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1.023 do CPC"},
         "Execução Extrajudicial (Pagamento) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 829 do CPC"}
     },
+    juizado: {
+        "Defesa ou Pagamento (Juizado) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 9.099/95 e CPC"},
+        "Recurso Inominado - 10 dias": {dias: 10, tipo: "uteis", base: "Art. 42 da Lei 9.099/95"},
+        "Embargos de Declaração - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 49 da Lei 9.099/95"}
+    },
     familia: {
-        "Ação de Alimentos (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC / Lei 5.478/68"},
-        "Execução de Alimentos (Pagamento) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"}
+        "Ação de Alimentos (Defesa) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC / Lei 5.478/68"},
+        "Execução de Alimentos (Pagar ou Justificar) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"}
     },
     criminal: {
-        "Resposta à Acusação - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 do CPP"},
-        "Apelação Criminal - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
+        "Resposta à Acusação (Defesa) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 do CPP"},
+        "Recurso de Apelação - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
     },
     violencia: {
         "Defesa em Medida Protetiva - 5 dias": {dias: 5, tipo: "corridos", base: "Lei Maria da Penha"}
     },
     eca: {
-        "Defesa Prévia (Ato Infracional) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, §3º do ECA"},
+        "Defesa Prévia (contados da audiência) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, §3º do ECA"},
         "Recurso no ECA - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
     }
+    despachos: {
+        "Cumprir ordem do Juiz - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218, §3º do CPC"},
+        "Cumprir ordem do Juiz - 10 dias": {dias: 10, tipo: "uteis", base: "Prazo fixado pelo Juiz"},
+        "Cumprir ordem do Juiz - 15 dias": {dias: 15, tipo: "uteis", base: "Prazo fixado pelo Juiz"}
+    },
+    imobiliario: {
+        "Despejo/Desocupação (Defesa) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 8.245/91 (Lei do Inquilinato)"},
+        "Notificação para Sair do Imóvel - 30 dias": {dias: 30, tipo: "corridos", base: "Art. 6º ou 46 da Lei 8.245/91"}
+    },
+    Busca e apreensão de bens: {
+    "Busca e Apreensão de bens (Defesa) - 15 dias": {dias: 15, tipo: "uteis", base: "Dec-Lei 911/69"},
+        "Busca e Apreensão de bens (Pagar para reaver) - 5 dias": {dias: 5, tipo: "corridos", base: "Dec-Lei 911/69 - Prazo Próprio"},
 };
 
 const feriados = [
@@ -157,3 +178,4 @@ function calcular() {
 </script>
 </body>
 </html>
+
