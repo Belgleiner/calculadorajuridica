@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Simulador de prazos - por Belizza Araújo</title>
-    <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fdf7fa; padding: 20px; text-align: center; color: #444; }
-        .container { background: white; max-width: 600px; margin: auto; padding: 30px; border-radius: 18px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-        h1 { color: #b76e79; margin-bottom: 5px; }
-        .subtitulo { font-size: 0.9em; color: #888; margin-bottom: 20px; }
-        label { display: block; margin-top: 15px; text-align: left; font-weight: bold; color: #7a4a52; }
-        select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
-        .checkbox-container { display: flex; align-items: center; margin-top: 20px; background: #fff5f7; padding: 10px; border-radius: 8px; border: 1px dashed #d88fa0; }
-        .checkbox-container input { width: auto; margin-right: 10px; margin-top: 0; cursor: pointer; }
-        .checkbox-container label { margin-top: 0; font-size: 0.9em; cursor: pointer; }
-        button { width: 100%; padding: 15px; margin-top: 25px; border: none; border-radius: 10px; background: #d88fa0; color: white; font-weight: bold; font-size: 1.1em; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #c5768b; }
-        .resultado { margin-top: 25px; background: #fff0f4; padding: 20px; border-radius: 10px; text-align: left; border-left: 5px solid #d88fa0; display: none; }
-        .alerta { color: #d9534f; font-weight: bold; margin-top: 10px; padding: 10px; background: #f9d6d5; border-radius: 5px; }
-        .dica-leigo { margin-top: 15px; font-size: 0.9em; color: #555; background: #fff; padding: 10px; border-radius: 5px; border: 1px solid #eee; }
-        .aviso { margin-top: 30px; font-size: 0.75em; color: #999; line-height: 1.5; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de prazos - por Belizza Araújo</title>
+<style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #fdf7fa; padding: 20px; text-align: center; color: #444; }
+    .container { background: white; max-width: 600px; margin: auto; padding: 30px; border-radius: 18px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+    h1 { color: #b76e79; margin-bottom: 5px; }
+    .subtitulo { font-size: 0.9em; color: #888; margin-bottom: 20px; }
+    label { display: block; margin-top: 15px; text-align: left; font-weight: bold; color: #7a4a52; }
+    select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
+    .checkbox-container { display: flex; align-items: center; margin-top: 20px; background: #fff5f7; padding: 10px; border-radius: 8px; border: 1px dashed #d88fa0; }
+    .checkbox-container input { width: auto; margin-right: 10px; margin-top: 0; cursor: pointer; }
+    .checkbox-container label { margin-top: 0; font-size: 0.9em; cursor: pointer; }
+    button { width: 100%; padding: 15px; margin-top: 25px; border: none; border-radius: 10px; background: #d88fa0; color: white; font-weight: bold; font-size: 1.1em; cursor: pointer; transition: 0.3s; }
+    button:hover { background: #c5768b; }
+    .resultado { margin-top: 25px; background: #fff0f4; padding: 20px; border-radius: 10px; text-align: left; border-left: 5px solid #d88fa0; display: none; }
+    .alerta { color: #d9534f; font-weight: bold; margin-top: 10px; padding: 10px; background: #f9d6d5; border-radius: 5px; }
+    .dica-leigo { margin-top: 15px; font-size: 0.9em; color: #555; background: #fff; padding: 10px; border-radius: 5px; border: 1px solid #eee; }
+    .aviso { margin-top: 30px; font-size: 0.75em; color: #999; line-height: 1.5; }
+    .copy-btn { margin-top: 15px; background: #b76e79; }
+    .copy-btn:hover { background: #a55d6c; }
+    @media (max-width: 500px) {
+        .container { padding: 20px; }
+        button { font-size: 1em; padding: 12px; }
+    }
+</style>
 </head>
 <body>
 
@@ -167,20 +174,30 @@ function calcular() {
 
     const resDiv = document.getElementById("resultado");
     const hoje = new Date(); hoje.setHours(0,0,0,0);
+    const diffTime = Math.ceil((dataFinal - hoje)/(1000*60*60*24));
     resDiv.style.display = "block";
     
     resDiv.innerHTML = `
         <strong>📅 Prazo Final: ${dataFinal.toLocaleDateString('pt-BR')}</strong>
         ${dataFinal < hoje ? '<div class="alerta">⚠️ Atenção: Prazo possivelmente vencido!</div>' : ''}
+        <p>${diffTime >= 0 ? 'Faltam ' + diffTime + ' dias para o prazo final.' : ''}</p>
         <div class="dica-leigo">
             <strong>Dica da Oficiala:</strong><br>
-            Este prazo é contado em <strong>${info.tipo}</strong>. <br>
+            Este prazo é contado em <strong>dias ${info.tipo}</strong>. <br>
             Procure um advogado ou a Defensoria Pública imediatamente portando este documento.
         </div>
         <p style="margin-top:10px; font-size:0.8em; color: #666;">
             Fundamento: ${info.base} | Contagem: ${qtdDias} dias.
         </p>
+        <button class="copy-btn" onclick="copiarResultado()">📋 Copiar Resultado</button>
     `;
+}
+
+function copiarResultado() {
+    const texto = document.getElementById("resultado").innerText;
+    navigator.clipboard.writeText(texto).then(() => {
+        alert("Resultado copiado para a área de transferência!");
+    });
 }
 </script>
 </body>
