@@ -2,59 +2,119 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Simulador Jurídico TJPE - Belizza Araújo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Prazos TJPE - Belizza Araújo</title>
     <style>
-        /* Estilo Mobile-First */
-        body { font-family: 'Segoe UI', sans-serif; background: #fdf7fa; padding: 10px; margin: 0; color: #444; }
-        .container { background: white; width: 95%; max-width: 500px; margin: 15px auto; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); box-sizing: border-box; }
-        
-        h1 { color: #b76e79; font-size: 1.4em; margin-bottom: 5px; }
-        .subtitulo { font-size: 0.85em; color: #888; margin-bottom: 20px; }
-        
-        label { display: block; margin-top: 15px; text-align: left; font-weight: 600; color: #7a4a52; font-size: 0.95em; }
-        
-        /* Inputs e Selects maiores para facilitar o toque */
+        /* CONFIGURAÇÕES GERAIS (LAPTOP & MOBILE) */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #fdf7fa; 
+            margin: 0; 
+            padding: 20px; 
+            display: flex; 
+            justify-content: center; 
+            color: #444; 
+        }
+
+        .container { 
+            background: white; 
+            width: 100%; 
+            max-width: 550px; /* Largura ideal para Laptop */
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(183, 110, 121, 0.15); 
+            border: 1px solid #f2e1e6;
+        }
+
+        h1 { color: #b76e79; font-size: 1.6em; margin-bottom: 5px; text-align: center; }
+        .subtitulo { font-size: 0.9em; color: #888; margin-bottom: 25px; text-align: center; }
+
+        label { display: block; margin-top: 15px; font-weight: 600; color: #7a4a52; font-size: 0.95em; }
+
         select, input { 
-            width: 100%; padding: 14px; margin-top: 5px; border-radius: 10px; 
-            border: 1px solid #ddd; box-sizing: border-box; font-size: 16px; /* 16px evita zoom automático no iOS */
-            background-color: #fff;
+            width: 100%; 
+            padding: 12px; 
+            margin-top: 6px; 
+            border-radius: 10px; 
+            border: 1px solid #ddd; 
+            box-sizing: border-box; 
+            font-size: 16px; /* Evita zoom forçado no iPhone */
+            transition: border 0.3s;
         }
-        
+
+        select:focus, input:focus { border-color: #d88fa0; outline: none; }
+
         .checkbox-container { 
-            display: flex; align-items: center; margin-top: 20px; background: #fff5f7; 
-            padding: 12px; border-radius: 10px; border: 1px dashed #d88fa0; text-align: left;
+            display: flex; 
+            align-items: center; 
+            margin-top: 20px; 
+            background: #fff5f7; 
+            padding: 15px; 
+            border-radius: 12px; 
+            border: 1px dashed #d88fa0; 
         }
-        .checkbox-container input { width: 22px; height: 22px; margin-right: 12px; margin-top: 0; }
-        .checkbox-container label { margin-top: 0; font-size: 0.85em; cursor: pointer; color: #555; font-weight: normal; }
+
+        .checkbox-container input { width: 20px; height: 20px; margin-right: 12px; cursor: pointer; }
+        .checkbox-container label { margin-top: 0; font-size: 0.9em; font-weight: normal; cursor: pointer; }
 
         button { 
-            width: 100%; padding: 16px; margin-top: 25px; border: none; border-radius: 12px; 
-            background: #d88fa0; color: white; font-weight: bold; font-size: 1.1em; 
-            cursor: pointer; transition: 0.2s; -webkit-tap-highlight-color: transparent;
+            width: 100%; 
+            padding: 15px; 
+            margin-top: 25px; 
+            border: none; 
+            border-radius: 12px; 
+            background: #d88fa0; 
+            color: white; 
+            font-weight: bold; 
+            font-size: 1.1em; 
+            cursor: pointer; 
+            transition: background 0.3s, transform 0.2s;
         }
-        button:active { background: #c5768b; transform: scale(0.98); }
-        
-        .resultado { margin-top: 25px; background: #fff0f4; padding: 18px; border-radius: 12px; text-align: left; border-left: 6px solid #d88fa0; display: none; }
-        .alerta { color: #d9534f; font-weight: bold; margin-top: 10px; padding: 10px; background: #f9d6d5; border-radius: 8px; font-size: 0.9em; }
-        
+
+        button:hover { background: #c5768b; }
+        button:active { transform: scale(0.98); }
+
+        .resultado { 
+            margin-top: 25px; 
+            background: #fcfcfc; 
+            padding: 20px; 
+            border-radius: 12px; 
+            border-left: 6px solid #d88fa0; 
+            display: none; 
+            text-align: left;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
+        }
+
         .dica-leigo { 
-            margin-top: 15px; font-size: 0.9em; color: #555; background: #fff; 
-            padding: 12px; border-radius: 8px; border: 1px solid #eee; line-height: 1.4;
+            margin-top: 12px; 
+            font-size: 0.9em; 
+            color: #555; 
+            background: white; 
+            padding: 10px; 
+            border-radius: 8px; 
+            border: 1px solid #eee; 
         }
-        
-        .aviso { margin-top: 25px; font-size: 0.75em; color: #999; line-height: 1.5; padding: 0 10px; }
+
+        .footer { margin-top: 30px; font-size: 0.75em; color: #aaa; text-align: center; line-height: 1.6; }
+
+        /* AJUSTES ESPECÍFICOS PARA MOBILE */
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .container { padding: 20px; }
+            h1 { font-size: 1.3em; }
+            button { padding: 18px; } /* Botão maior no celular */
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>🌸 Simulador de Prazos</h1>
-    <div class="subtitulo">Apoio ao Cidadão - TJPE</div>
+    <div class="subtitulo">Oficiala Belizza Araújo – TJPE</div>
 
-    <label>Área do processo:</label>
+    <label>Área Jurídica:</label>
     <select id="categoria" onchange="carregarSubcategorias()">
-        <option value="">Selecione...</option>
+        <option value="">Selecione a área...</option>
         <option value="civil">Cível (Justiça Comum)</option>
         <option value="juizado">Juizado Especial</option>
         <option value="familia">Família / Alimentos</option>
@@ -66,67 +126,66 @@
         <option value="eca">Infância e Juventude</option>
     </select>
 
-    <label>Documento recebido:</label>
+    <label>Tipo de Documento:</label>
     <select id="ato">
-        <option value="">Selecione a área acima</option>
+        <option value="">Selecione a área acima primeiro</option>
     </select>
   
-    <label>Data que recebeu o papel:</label>
+    <label>Data do Recebimento:</label>
     <input type="date" id="data">
 
     <div class="checkbox-container">
         <input type="checkbox" id="prazoDobro">
-        <label for="prazoDobro">Sou assistido pela <strong>Defensoria Pública</strong> (Prazo em Dobro)</label>
+        <label for="prazoDobro">Tenho <strong>Defensoria Pública</strong> ou Ministério Público (Prazo em Dobro)</label>
     </div>
 
-    <button onclick="calcular()">CALCULAR PRAZO FINAL</button>
+    <button onclick="calcular()">CALCULAR PRAZO</button>
 
     <div id="resultado" class="resultado"></div>
 
-    <div class="aviso">
-        <strong>Oficiala Belizza Araújo (TJPE)</strong><br>
-        Este simulador é educativo e não substitui a orientação de um advogado. 
-        Dados baseados no calendário judiciário 2026.
+    <div class="footer">
+        <strong>Atenção:</strong> Calendário Judiciário 2026.<br>
+        Esta é uma ferramenta informativa. Não substitui o advogado.<br>
+        Prazos conforme CPC, CPP e Leis Especiais.
     </div>
 </div>
 
 <script>
-// O Javascript permanece o mesmo do anterior, apenas limpo de caracteres estranhos.
 const prazos = {
     civil: {
-        "Defesa (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 CPC"},
-        "Recorrer (Apelação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003 CPC"},
-        "Embargos de Declaração - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1.023 CPC"},
-        "Execução (Pagamento) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 829 CPC"}
+        "Defesa (Contestação) - 15 dias": {dias: 15, tipo: "úteis", base: "Art. 335 CPC"},
+        "Apelação (Recurso) - 15 dias": {dias: 15, tipo: "úteis", base: "Art. 1.003 CPC"},
+        "Embargos de Declaração - 5 dias": {dias: 5, tipo: "úteis", base: "Art. 1.023 CPC"},
+        "Pagamento de Execução - 3 dias": {dias: 3, tipo: "úteis", base: "Art. 829 CPC"}
     },
     juizado: {
-        "Defesa ou Pagamento - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 9.099/95"},
-        "Recurso Inominado - 10 dias": {dias: 10, tipo: "uteis", base: "Art. 42 Lei 9.099"},
-        "Embargos de Declaração - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 49 Lei 9.099"}
+        "Defesa ou Pagamento - 15 dias": {dias: 15, tipo: "úteis", base: "Lei 9.099/95"},
+        "Recurso Inominado - 10 dias": {dias: 10, tipo: "úteis", base: "Art. 42 Lei 9.099"},
+        "Embargos de Declaração - 5 dias": {dias: 5, tipo: "úteis", base: "Art. 49 Lei 9.099"}
     },
     familia: {
-        "Defesa em Alimentos - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 5.478/68"},
-        "Pagar ou Justificar - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 CPC"}
+        "Defesa (Alimentos) - 15 dias": {dias: 15, tipo: "úteis", base: "Lei 5.478/68"},
+        "Pagar ou Justificar - 3 dias": {dias: 3, tipo: "úteis", base: "Art. 528 CPC"}
     },
     imobiliario: {
-        "Defesa em Despejo - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 8.245/91"},
-        "Sair do Imóvel - 30 dias": {dias: 30, tipo: "corridos", base: "Lei 8.245/91"}
+        "Defesa (Despejo) - 15 dias": {dias: 15, tipo: "úteis", base: "Lei 8.245/91"},
+        "Prazo para Desocupar - 30 dias": {dias: 30, tipo: "corridos", base: "Lei 8.245/91"}
     },
     despachos: {
-        "Cumprir Ordem - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218 CPC"},
-        "Cumprir Ordem - 10 dias": {dias: 10, tipo: "uteis", base: "Prazo Judicial"},
-        "Cumprir Ordem - 15 dias": {dias: 15, tipo: "uteis", base: "Prazo Judicial"}
+        "Cumprir Ordem - 5 dias": {dias: 5, tipo: "úteis", base: "Art. 218 CPC"},
+        "Cumprir Ordem - 10 dias": {dias: 10, tipo: "úteis", base: "Prazo Judicial"},
+        "Cumprir Ordem - 15 dias": {dias: 15, tipo: "úteis", base: "Prazo Judicial"}
     },
     urgentes: {
-        "Defesa (Busca e Apreensão) - 15 dias": {dias: 15, tipo: "uteis", base: "DL 911/69"},
-        "Pagar para reaver veículo - 5 dias": {dias: 5, tipo: "corridos", base: "DL 911/69"}
+        "Defesa (Busca e Apreensão) - 15 dias": {dias: 15, tipo: "úteis", base: "Dec-Lei 911/69"},
+        "Pagar p/ reaver veículo - 5 dias": {dias: 5, tipo: "corridos", base: "Dec-Lei 911/69"}
     },
     criminal: {
-        "Defesa (Resposta) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 CPP"},
-        "Apelação - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 CPP"}
+        "Resposta à Acusação - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 CPP"},
+        "Apelação Criminal - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 CPP"}
     },
     violencia: {
-        "Defesa (Protetiva) - 5 dias": {dias: 5, tipo: "corridos", base: "Lei Maria da Penha"}
+        "Defesa (Medida Protetiva) - 5 dias": {dias: 5, tipo: "corridos", base: "Lei 11.340/06"}
     },
     eca: {
         "Defesa Prévia - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186 ECA"},
@@ -158,13 +217,13 @@ function calcular() {
     const cat = document.getElementById("categoria").value, atoSel = document.getElementById("ato").value;
     const dataInic = document.getElementById("data").value, isDobro = document.getElementById("prazoDobro").checked;
 
-    if (!cat || !atoSel || !dataInic) { alert("Preencha todos os campos!"); return; }
+    if (!cat || !atoSel || !dataInic) { alert("Por favor, preencha todos os campos."); return; }
 
     const info = prazos[cat][atoSel];
     let qtd = isDobro ? info.dias * 2 : info.dias;
     let final = new Date(dataInic + "T00:00:00");
     
-    if (info.tipo === "uteis") {
+    if (info.tipo === "úteis") {
         let cont = 0;
         while (cont < qtd) {
             final.setDate(final.getDate() + 1);
@@ -178,13 +237,15 @@ function calcular() {
     const resDiv = document.getElementById("resultado");
     resDiv.style.display = "block";
     resDiv.innerHTML = `
-        <div style="font-size: 1.1em; color: #7a4a52;"><strong>📅 Prazo Final: ${final.toLocaleDateString('pt-BR')}</strong></div>
+        <div style="font-size: 1.1em; color: #7a4a52; margin-bottom: 10px;"><strong>📅 Prazo Final: ${final.toLocaleDateString('pt-BR')}</strong></div>
         <div class="dica-leigo">
-            <strong>Dica da Oficiala:</strong> Este prazo conta em <strong>${info.tipo}</strong>. Procure assistência jurídica imediatamente!
+            <strong>Dica da Oficiala:</strong> Este prazo é contado em dias <strong>${info.tipo}</strong>. <br><br>
+            Atenção: A contagem oficial geralmente começa após a devolução do mandado ao sistema. Procure assistência jurídica urgente!
         </div>
-        <p style="font-size: 0.7em; color: #999; margin-top: 8px;">Base: ${info.base}</p>
+        <p style="font-size: 0.75em; color: #999; margin-top: 12px; border-top: 1px solid #eee; padding-top: 10px;">
+            Fundamento Legal: ${info.base} | Prazo total: ${qtd} dias.
+        </p>
     `;
-    resDiv.scrollIntoView({ behavior: 'smooth' });
 }
 </script>
 </body>
