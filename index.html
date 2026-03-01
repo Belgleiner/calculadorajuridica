@@ -6,55 +6,45 @@
 <title>Simulador de prazos judiciais - por Belizza Araújo</title>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
-
-    /* 1. Reset para garantir que nada "vaze" para os lados */
-    * {
-        box-sizing: border-box;
-        max-width: 100%;
-    }
-
-    html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        overflow-x: hidden; /* Impede a rolagem lateral que causa o desalinhamento */
-    }
-
+    
+    /* Ajuste no body para centralizar o conteúdo em qualquer tela */
     body { 
         font-family: 'Segoe UI', Arial, sans-serif; 
         background: #fdf7fa; 
-        display: flex; 
-        justify-content: center; /* Centraliza horizontalmente */
-        align-items: flex-start; 
-        min-height: 100vh;
+        margin: 0; 
         padding: 20px 10px; 
+        display: flex; 
+        justify-content: center; 
         color: #444; 
     }
 
-    /* 2. Ajuste da Container */
+    /* Container com box-sizing para não "estourar" a largura no mobile */
     .container { 
         background: white; 
         width: 100%; 
-        max-width: 500px; /* Reduzi um pouco para garantir que cabe em qualquer telemóvel */
+        max-width: 600px; 
         margin: 0 auto; 
-        padding: 25px; 
+        padding: 30px; 
         border-radius: 18px; 
         box-shadow: 0 8px 25px rgba(0,0,0,0.1); 
+        box-sizing: border-box; 
         text-align: center;
     }
 
-    h1 { color: #b76e79; margin-bottom: 5px; font-size: 1.6em; }
+    h1 { color: #b76e79; margin-bottom: 5px; }
     .subtitulo { font-size: 0.9em; color: #888; margin-bottom: 20px; }
     .satisfy { font-family: 'Satisfy', cursive; font-size: 1.1em; color: #b76e79; }
     
     label { display: block; margin-top: 15px; text-align: left; font-weight: bold; color: #7a4a52; }
     
+    /* Inputs e Selects com box-sizing garantem que o padding não quebre o layout */
     select, input { 
         width: 100%; 
         padding: 12px; 
         margin-top: 5px; 
         border-radius: 8px; 
         border: 1px solid #ddd; 
+        box-sizing: border-box; 
         font-size: 16px; 
     }
 
@@ -63,56 +53,30 @@
         align-items: center; 
         margin-top: 20px; 
         background: #fff5f7; 
-        padding: 12px; 
+        padding: 10px; 
         border-radius: 8px; 
         border: 1px dashed #d88fa0; 
+        box-sizing: border-box;
     }
 
-    /* Ajuste específico para o checkbox não quebrar no mobile */
-    .checkbox-container input { 
-        flex-shrink: 0;
-        margin-right: 10px; 
-        height: 20px; 
-        width: 20px; 
-    }
-
-    .checkbox-container label { 
-        margin-top: 0; 
-        font-size: 0.85em; 
-        text-align: left; 
-        line-height: 1.3;
-    }
+    .checkbox-container input { width: auto; margin-right: 10px; margin-top: 0; cursor: pointer; height: 20px; width: 20px; }
+    .checkbox-container label { margin-top: 0; font-size: 0.9em; cursor: pointer; text-align: left; }
     
-    button { 
-        width: 100%; 
-        padding: 15px; 
-        margin-top: 20px; 
-        border: none; 
-        border-radius: 10px; 
-        background: #d88fa0; 
-        color: white; 
-        font-weight: bold; 
-        font-size: 1.1em; 
-        cursor: pointer; 
-    }
+    button { width: 100%; padding: 15px; margin-top: 20px; border: none; border-radius: 10px; background: #d88fa0; color: white; font-weight: bold; font-size: 1.1em; cursor: pointer; transition: 0.3s; }
+    button:hover { background: #c5768b; }
 
-    .resultado { 
-        margin-top: 25px; 
-        background: #fff0f4; 
-        padding: 15px; 
-        border-radius: 10px; 
-        text-align: left; 
-        border-left: 5px solid #d88fa0; 
-        display: none; 
-    }
+    .resultado { margin-top: 25px; background: #fff0f4; padding: 20px; border-radius: 10px; text-align: left; border-left: 5px solid #d88fa0; display: none; font-family: 'Segoe UI', Arial, sans-serif; box-sizing: border-box; }
+    
+    .alerta { color: #d9534f; font-weight: bold; margin-top: 10px; padding: 10px; background: #f9d6d5; border-radius: 5px; }
+    .dica-leigo { margin-top: 15px; font-size: 0.9em; color: #555; background: #fff; padding: 10px; border-radius: 5px; border: 1px solid #eee; }
+    .aviso { margin-top: 30px; font-size: 0.9em; color: #999; line-height: 1.5; }
 
-    .aviso { margin-top: 30px; font-size: 0.85em; color: #999; line-height: 1.4; }
-
-    /* 3. Media Query Reforçada */
-    @media (max-width: 400px) { 
-        .container { padding: 15px; } 
+    /* Media query ajustada para telas bem pequenas */
+    @media (max-width: 500px) { 
+        body { padding: 10px 5px; }
+        .container { padding: 20px; } 
         h1 { font-size: 1.3em; }
-        .subtitulo { font-size: 0.8em; }
+        button { font-size: 1em; padding: 15px; } 
     }
 </style>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -165,6 +129,7 @@
         🌸 <span class="satisfy">Desenvolvido por Belizza Araújo – Oficiala de Justiça do TJPE</span>
     </div>
 </div>
+
 
 <script>
 const prazos = {
@@ -294,6 +259,7 @@ function copiarEEnviarWhatsApp(){
 
 </body>
 </html>
+
 
 
 
