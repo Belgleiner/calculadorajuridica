@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulador de prazos - por Belizza Araújo</title>
+<title>Simulador de prazos judiciais - por Belizza Araújo</title>
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap'); /* manuscrita Satisfy */
     body { font-family: 'Segoe UI', Arial, sans-serif; background: #fdf7fa; padding: 20px; text-align: center; color: #444; }
     .container { background: white; max-width: 600px; margin: auto; padding: 30px; border-radius: 18px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
     h1 { color: #b76e79; margin-bottom: 5px; }
     .subtitulo { font-size: 0.9em; color: #888; margin-bottom: 20px; }
+    .satisfy { font-family: 'Satisfy', cursive; font-size: 1.1em; color: #b76e79; } /* tamanho aumentado e cor suave */
     label { display: block; margin-top: 15px; text-align: left; font-weight: bold; color: #7a4a52; }
     select, input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
     .checkbox-container { display: flex; align-items: center; margin-top: 20px; background: #fff5f7; padding: 10px; border-radius: 8px; border: 1px dashed #d88fa0; }
@@ -16,23 +18,20 @@
     .checkbox-container label { margin-top: 0; font-size: 0.9em; cursor: pointer; }
     button { width: 100%; padding: 15px; margin-top: 25px; border: none; border-radius: 10px; background: #d88fa0; color: white; font-weight: bold; font-size: 1.1em; cursor: pointer; transition: 0.3s; }
     button:hover { background: #c5768b; }
-    .resultado { margin-top: 25px; background: #fff0f4; padding: 20px; border-radius: 10px; text-align: left; border-left: 5px solid #d88fa0; display: none; }
+    .resultado { margin-top: 25px; background: #fff0f4; padding: 20px; border-radius: 10px; text-align: left; border-left: 5px solid #d88fa0; display: none; font-family: 'Segoe UI', Arial, sans-serif; }
     .alerta { color: #d9534f; font-weight: bold; margin-top: 10px; padding: 10px; background: #f9d6d5; border-radius: 5px; }
     .dica-leigo { margin-top: 15px; font-size: 0.9em; color: #555; background: #fff; padding: 10px; border-radius: 5px; border: 1px solid #eee; }
-    .aviso { margin-top: 30px; font-size: 0.75em; color: #999; line-height: 1.5; }
-    .copy-btn { margin-top: 15px; background: #b76e79; }
-    .copy-btn:hover { background: #a55d6c; }
-    @media (max-width: 500px) {
-        .container { padding: 20px; }
-        button { font-size: 1em; padding: 12px; }
-    }
+    .aviso { margin-top: 30px; font-size: 0.9em; color: #999; line-height: 1.5; }
+    @media (max-width: 500px) { .container { padding: 20px; } button { font-size: 1em; padding: 12px; } }
 </style>
 </head>
 <body>
 
 <div class="container">
     <h1>🌸 Simulador de Prazos – TJPE</h1>
-    <div class="subtitulo">Ferramenta educativa de auxílio processual.</div>
+    <div class="subtitulo">
+        Aprenda e organize seus prazos judiciais - por Belizza Araújo
+    </div>
 
     <label>Área do processo:</label>
     <select id="categoria" onchange="carregarSubcategorias()">
@@ -65,10 +64,11 @@
 
     <div id="resultado" class="resultado"></div>
 
+    <button onclick="copiarEEnviarWhatsApp()" style="margin-top:10px;">Enviar para WhatsApp</button>
+
     <div class="aviso">
-        <strong>Atenção:</strong> Calendário 2026. Inclui Recessos do TJPE.<br>
-        Não inclui feriados municipais (padroeiros locais).<br>
-        <strong>Belizza Araújo – Oficiala de Justiça TJPE</strong>
+        Ferramenta criada para auxiliar na contagem dos prazos judiciais. Não inclui os feriados municipais! <br>
+        🌸 <span class="satisfy">Desenvolvido por Belizza Araújo – Oficiala de Justiça do TJPE</span>
     </div>
 </div>
 
@@ -78,16 +78,18 @@ const prazos = {
         "Defesa (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 e 523 do CPC"},
         "Recorrer da sentença (Apelação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
         "Embargos de Declaração - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1.023 do CPC"},
-        "Execução Extrajudicial (Pagamento) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 829 do CPC"}
+        "Execução Extrajudicial (Pagamento) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 829 do CPC"},
+        "Audiência no CEJUSC - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
     },
     juizado: {
         "Defesa ou Pagamento (Juizado) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 9.099/95"},
         "Recurso Inominado - 10 dias": {dias: 10, tipo: "uteis", base: "Art. 42 da Lei 9.099/95"},
-        "Embargos de Declaração - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 49 da Lei 9.099/95"}
+        "Embargos de Declaração - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 49 da Lei 9.099/95"},
     },
     familia: {
         "Ação de Alimentos (Defesa) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC / Lei 5.478/68"},
-        "Execução de Alimentos (Pagar ou Justificar) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"}
+        "Execução de Alimentos (Pagar ou Justificar) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"},
+        "Audiência no CEJUSC - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
     },
     imobiliario: {
         "Despejo (Defesa) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 8.245/91"},
@@ -110,95 +112,85 @@ const prazos = {
         "Defesa em Medida Protetiva - 5 dias": {dias: 5, tipo: "corridos", base: "Lei Maria da Penha"}
     },
     eca: {
-        "Defesa Prévia (conta da audiência) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, §3º do ECA"},
+        "Defesa Prévia (conta da audiência) - 3 dias": {dias: 3, tipo: "uteis", base: "Lei 9.099/95", contaDaAudiencia: true},
         "Recurso no ECA - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
     }
 };
 
-const feriados = [
-    "2026-01-01", "2026-02-16", "2026-02-17", "2026-02-18", "2026-03-06", 
-    "2026-04-02", "2026-04-03", "2026-04-21", "2026-05-01", "2026-06-22", 
-    "2026-06-24", "2026-07-16", "2026-08-10", "2026-09-07", "2026-10-12", 
-    "2026-10-30", "2026-11-02", "2026-11-20", "2026-12-08", "2026-12-25"
-];
+const feriados = ["2026-01-01","2026-02-16","2026-02-17","2026-02-18","2026-03-06","2026-04-02","2026-04-03","2026-04-21","2026-05-01","2026-06-22","2026-06-24","2026-07-16","2026-08-10","2026-09-07","2026-10-12","2026-10-30","2026-11-02","2026-11-20","2026-12-08","2026-12-25"];
 
-function emRecesso(dataISO) {
-    const d = new Date(dataISO + "T00:00:00");
-    const juninoInic = new Date("2026-06-23T00:00:00");
-    const juninoFim = new Date("2026-06-30T00:00:00");
-    const fimAnoInic = new Date("2026-12-20T00:00:00");
-    const fimAnoFim = new Date("2027-01-06T00:00:00");
-    return (d >= juninoInic && d <= juninoFim) || (d >= fimAnoInic && d <= fimAnoFim);
+function emRecesso(dataISO){
+    const d = new Date(dataISO+"T00:00:00");
+    return (d>=new Date("2026-06-23") && d<=new Date("2026-06-30")) ||
+           (d>=new Date("2026-12-20") && d<=new Date("2027-01-06"));
 }
 
-function carregarSubcategorias() {
+function carregarSubcategorias(){
     const cat = document.getElementById("categoria").value;
     const ato = document.getElementById("ato");
-    ato.innerHTML = '<option value="">Selecione o documento...</option>';
-    if (!cat || !prazos[cat]) return;
-    for (let item in prazos[cat]) {
+    ato.innerHTML='<option value="">Selecione o documento...</option>';
+    if(!cat||!prazos[cat]) return;
+    for(let item in prazos[cat]){
         let opt = document.createElement("option");
-        opt.value = item;
-        opt.text = item;
-        ato.appendChild(opt);
+        opt.value = item; opt.text = item; ato.appendChild(opt);
     }
 }
 
-function calcular() {
+function calcular(){
     const cat = document.getElementById("categoria").value;
     const atoSel = document.getElementById("ato").value;
     const dataInicInput = document.getElementById("data").value;
     const isDobro = document.getElementById("prazoDobro").checked;
-
-    if (!cat || !atoSel || !dataInicInput) {
-        alert("Por favor, preencha todos os campos.");
-        return;
-    }
-
+    if(!cat||!atoSel||!dataInicInput){alert("Preencha todos os campos."); return;}
     const info = prazos[cat][atoSel];
-    let qtdDias = isDobro ? info.dias * 2 : info.dias;
-    let dataFinal = new Date(dataInicInput + "T00:00:00");
-    
-    if (info.tipo === "uteis") {
-        let cont = 0;
-        while (cont < qtdDias) {
-            dataFinal.setDate(dataFinal.getDate() + 1);
+    let qtdDias = isDobro ? info.dias*2 : info.dias;
+    let dataFinal = new Date(dataInicInput+"T00:00:00");
+
+    if(info.tipo==="úteis"){
+        let cont=0;
+        while(cont<qtdDias){
+            dataFinal.setDate(dataFinal.getDate()+1);
             let iso = dataFinal.toISOString().split('T')[0];
-            if (dataFinal.getDay() !== 0 && dataFinal.getDay() !== 6 && !feriados.includes(iso) && !emRecesso(iso)) {
+            if(dataFinal.getDay()!=0 && dataFinal.getDay()!=6 && !feriados.includes(iso) && !emRecesso(iso)){
                 cont++;
             }
         }
-    } else {
-        dataFinal.setDate(dataFinal.getDate() + qtdDias);
-    }
+    } else { dataFinal.setDate(dataFinal.getDate()+qtdDias); }
 
     const resDiv = document.getElementById("resultado");
     const hoje = new Date(); hoje.setHours(0,0,0,0);
-    const diffTime = Math.ceil((dataFinal - hoje)/(1000*60*60*24));
-    resDiv.style.display = "block";
-    
+    const vencido = dataFinal<hoje;
+    const diffTime = Math.ceil((dataFinal-hoje)/(1000*60*60*24));
+
+    resDiv.style.display="block";
     resDiv.innerHTML = `
-        <strong>📅 Prazo Final: ${dataFinal.toLocaleDateString('pt-BR')}</strong>
-        ${dataFinal < hoje ? '<div class="alerta">⚠️ Atenção: Prazo possivelmente vencido!</div>' : ''}
-        <p>${diffTime >= 0 ? 'Faltam ' + diffTime + ' dias para o prazo final.' : ''}</p>
+        <p>📅 <strong>Prazo Final:</strong> ${dataFinal.toLocaleDateString('pt-BR')}</p>
+        ${info.contaDaAudiencia?'<p>⚖️ Contagem da audiência</p>':''}
+        ${isDobro?'<p>💙 Prazo em dobro (Defensoria Pública)</p>':''}
+        ${vencido?'<p>⛔ Prazo vencido</p>':''}
+        ${diffTime>=0?'<p>Faltam '+diffTime+' dias para o prazo final.</p>':''}
         <div class="dica-leigo">
             <strong>Dica da Oficiala:</strong><br>
-            Este prazo é contado em <strong>dias ${info.tipo}</strong>. <br>
-            Procure um advogado ou a Defensoria Pública imediatamente portando este documento.
-        </div>
-        <p style="margin-top:10px; font-size:0.8em; color: #666;">
+            Este prazo é contado em <strong>dias  ${info.tipo}</strong>.<br>
+            Procure um advogado ou a Defensoria Pública com seus documentos e o mandado recebido.<br>
+            Confirme sempre com o adovogado ou defensor o seu prazo!
+        </div
+        <p style="margin-top:10px;font-size:0.8em;color:#666;">
             Fundamento: ${info.base} | Contagem: ${qtdDias} dias.
         </p>
-        <button class="copy-btn" onclick="copiarResultado()">📋 Copiar Resultado</button>
     `;
 }
 
-function copiarResultado() {
-    const texto = document.getElementById("resultado").innerText;
-    navigator.clipboard.writeText(texto).then(() => {
-        alert("Resultado copiado para a área de transferência!");
+function copiarEEnviarWhatsApp(){
+    const resDiv = document.getElementById("resultado");
+    if(resDiv.style.display === "none"){ alert("Primeiro calcule o prazo!"); return; }
+    const texto = resDiv.innerText;
+    navigator.clipboard.writeText(texto).then(()=>{
+        const textoCodificado = encodeURIComponent(texto);
+        window.open(`https://api.whatsapp.com/send?text=${textoCodificado}`,'_blank');
     });
 }
 </script>
+
 </body>
 </html>
