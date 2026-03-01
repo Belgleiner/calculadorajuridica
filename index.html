@@ -110,7 +110,7 @@
         <option value="">Selecione a área primeiro</option>
     </select>
   
-    <label>Data que recebeu o papel (ou audiência):</label>
+    <label>Data que recebeu o papel (ou data da audiência no CEJUSC/conciliação):</label>
     <input type="date" id="data">
 
     <div class="checkbox-container">
@@ -134,45 +134,45 @@
 <script>
 const prazos = {
     civil: {
-        "Defesa (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 e 523 do CPC"},
-        "Recorrer da Sentença (Apelação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
-        "Embargos de Declaração - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1.023 do CPC"},
-        "Execução Extrajudicial (Pagamento) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 829 do CPC"},
-        "Audiência no CEJUSC - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
+        "Defesa - Contestação (Para se defender do processo) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 e 523 do CPC"},
+        "Recurso - Apelação (Para reclamar da decisão do Juiz) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
+        "Embargos de Declaração (Para pedir correção de erro no texto) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1.023 do CPC"},
+        "Pagamento de Título Extrajudicial (Pagar dívida) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 829 do CPC"},
+        "Prazo após Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
     },
     juizado: {
-        "Defesa ou Pagamento (Juizado) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 9.099/95"},
-        "Recorrer da sentença (Recurso Inominado) - 10 dias": {dias: 10, tipo: "uteis", base: "Art. 42 da Lei 9.099/95"},
-        "Embargos de Declaração - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 49 da Lei 9.099/95"}
+        "Defesa ou Pagamento (Juizado Especial) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 9.099/95"},
+        "Recurso Inominado (Para reclamar da sentença) - 10 dias": {dias: 10, tipo: "uteis", base: "Art. 42 da Lei 9.099/95"},
+        "Embargos de Declaração (Dúvida na sentença) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 49 da Lei 9.099/95"}
     },
     familia: {
-        "Ação de Alimentos (Defesa) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC / Lei 5.478/68"},
-        "Execução de Alimentos (Pagar ou Justificar) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"},
-        "Audiência no CEJUSC - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
+        "Defesa em Ação de Alimentos (Processo de Pensão) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC / Lei 5.478/68"},
+        "Pagar ou Justificar (Atraso de Pensão sob pena de Prisão) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"},
+        "Prazo após Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
     },
     imobiliario: {
-        "Despejo (Defesa) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 8.245/91"},
-        "Notificação para Desocupar - 30 dias": {dias: 30, tipo: "corridos", base: "Lei do Inquilinato"}
+        "Defesa em Despejo (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 8.245/91"},
+        "Desocupação Voluntária (Prazo para sair do imóvel) - 30 dias": {dias: 30, tipo: "corridos", base: "Lei do Inquilinato"}
     },
     despachos: {
-        "Cumprir Ordem do Juiz - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218, §3º do CPC"},
-        "Cumprir Ordem do Juiz - 10 dias": {dias: 10, tipo: "uteis", base: "Prazo assinalado"},
-        "Cumprir Ordem do Juiz - 15 dias": {dias: 15, tipo: "uteis", base: "Prazo assinalado"}
+        "Cumprir Ordem Geral do Juiz (Manifestação) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218, §3º do CPC"},
+        "Cumprir Ordem Específica (Prazo do Juiz) - 10 dias": {dias: 10, tipo: "uteis", base: "Prazo assinalado"},
+        "Cumprir Ordem Específica (Prazo do Juiz) - 15 dias": {dias: 15, tipo: "uteis", base: "Prazo assinalado"}
     },
     urgentes: {
-        "Defesa em Busca e Apreensão - 15 dias": {dias: 15, tipo: "uteis", base: "Dec-Lei 911/69"},
-        "Pagar para reaver veículo - 5 dias": {dias: 5, tipo: "corridos", base: "Dec-Lei 911/69"}
+        "Defesa em Busca e Apreensão (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Dec-Lei 911/69"},
+        "Pagamento para reaver veículo (Purgação da mora) - 5 dias": {dias: 5, tipo: "corridos", base: "Dec-Lei 911/69"}
     },
     criminal: {
-        "Resposta à Acusação/Denúncia (Defesa) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 do CPP"},
-        "Recorrer da Sentença (Apelação) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
+        "Resposta à Acusação (Defesa em processo criminal) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 do CPP"},
+        "Apelação Criminal (Recurso contra sentença) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
     },
     violencia: {
-        "Defesa em Medida Protetiva - 5 dias": {dias: 5, tipo: "corridos", base: "Lei Maria da Penha"}
+        "Defesa em Medida Protetiva (Lei Maria da Penha) - 5 dias": {dias: 5, tipo: "corridos", base: "Lei Maria da Penha"}
     },
     eca: {
-        "Defesa Prévia (conta da data audiência) - 3 dias": {dias: 3, tipo: "uteis", base: "Lei 9.099/95", contaDaAudiencia: true},
-        "Recurso no ECA - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
+        "Defesa Prévia no ECA (Contado da audiência) - 3 dias": {dias: 3, tipo: "uteis", base: "Lei 9.099/95", contaDaAudiencia: true},
+        "Recurso no ECA (Infância e Juventude) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
     }
 };
 
