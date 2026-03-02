@@ -118,7 +118,7 @@
         <option value="">Selecione a área primeiro</option>
     </select>
   
-    <label>Data que recebeu o papel (ou data da audiência no CEJUSC/conciliação):</label>
+    <label>Data que recebeu o papel (ou data da audiência de conciliação):</label>
     <input type="date" id="data">
 
     <div class="checkbox-container">
@@ -247,8 +247,8 @@ function calcular(){
         <div class="dica-leigo">
             <strong>Dica da Oficiala:</strong><br>
             Este prazo é contado em <strong>dias ${info.tipo === 'uteis' ? 'úteis' : 'corridos'}</strong>.<br>
-            Procure um advogado ou a Defensoria Pública com seus documentos e o mandado recebido.<br>
-            Confirme sempre com o advogado ou defensor o seu prazo!
+            Procure um advogado ou a Defensoria Pública com seus documentos e o mandado recebido e sempre confirme seu prazo!<br>
+        
         </div>
         <p style="margin-top:10px;font-size:0.8em;color:#666;">
             Fundamento: ${info.base} | Contagem: ${qtdDias} dias.
