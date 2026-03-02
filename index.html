@@ -245,7 +245,7 @@ function calcular(){
         ${vencido?'<p class="alerta">⛔ Prazo vencido!</p>':''}
         ${!vencido ? '<p>Faltam ' + diffTime + ' dias para o prazo final.</p>' : ''}
         <div class="dica-leigo">
-            <strong>Dica da Oficiala:</strong><br>
+            <span class="satisfy" style="font-size: 1.2em;">Dica da Oficiala:</span><br>
             Este prazo é contado em <strong>dias ${info.tipo === 'uteis' ? 'úteis' : 'corridos'}</strong>.<br>
             Procure um advogado ou a Defensoria Pública com seus documentos e o mandado recebido e sempre confirme seu prazo!<br>
         
@@ -267,6 +267,7 @@ function copiarEEnviarWhatsApp(){
 
 </body>
 </html>
+
 
 
 
