@@ -244,7 +244,8 @@ function calcular(){
         ${isDobro?'<p>💙 Prazo em dobro (Defensoria Pública)</p>':''}
         ${vencido?'<p class="alerta">⛔ Prazo vencido!</p>':''}
         ${!vencido ? '<p>Faltam ' + diffTime + ' dias para o prazo final.</p>' : ''}
-        <div class="dica-leigo">
+       
+        <div style="background: #ffffff; padding: 12px; border-radius: 8px; margin: 15px 0; font-size: 0.85em; color: #666; border: 1px solid #f2d7dc; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
             <span class="satisfy" style="font-size: 1.2em;">Dica da Oficiala:</span><br>
             Este prazo é contado em <strong>dias ${info.tipo === 'uteis' ? 'úteis' : 'corridos'}</strong>.<br>
             Procure um advogado ou a Defensoria Pública com seus documentos e o mandado recebido e sempre confirme seu prazo!<br>
@@ -267,6 +268,7 @@ function copiarEEnviarWhatsApp(){
 
 </body>
 </html>
+
 
 
 
