@@ -112,6 +112,14 @@
         Aprenda e organize seus prazos judiciais - por Belizza Araújo
     </div>
 
+  <div style="background: #eef2f7; padding: 15px; border-radius: 10px; border-left: 5px solid #4a7c9d; margin-bottom: 20px; font-size: 0.9em; text-align: left;">
+    <strong>📄 Papel na mão!</strong> <br>
+    Antes de calcular, localize no seu mandado (o papel que recebeu) os seguintes itens:
+    <ul style="margin: 5px 0; padding-left: 20px;">
+        <li>O <strong>prazo</strong> que o Juiz determinou.</li>
+        <li>A <strong>data</strong> em que você recebeu o documento.</li>
+    </ul>
+</div>
     <label>Área do processo:</label>
     <select id="categoria" onchange="carregarSubcategorias()">
         <option value="">Selecione a área...</option>
@@ -119,8 +127,9 @@
         <option value="juizado">Juizado Especial (Pequenas Causas)</option>
         <option value="familia">Família / Alimentos</option>
         <option value="imobiliario">Imobiliário (Despejo/Saída)</option>
+      <option value="execucoes">Execução (Dívidas, Impostos e Penhoras)</option>
         <option value="despachos">Ordens do Juiz (Despachos)</option>
-        <option value="urgentes">Busca e Apreensão</option>
+        <option value="urgentes">Busca e Apreensão (veículos e outros)</option>
         <option value="criminal">Criminal</option>
         <option value="violencia">Violência Doméstica</option>
         <option value="eca">Infância e Juventude (ECA)</option>
@@ -158,8 +167,7 @@ const prazos = {
         "Defesa - Contestação (Para se defender do processo) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 do CPC"},
         "Recurso - Apelação (Para reclamar da decisão do Juiz) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
         "Embargos de Declaração (Para pedir correção de erro no texto) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1.023 do CPC"},
-        "Pagamento de Título Extrajudicial (Pagar dívida) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 829 do CPC"},
-        "Prazo após Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
+                "Prazo após Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
     },
     juizado: {
         "Defesa ou Pagamento (Juizado Especial) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 9.099/95"},
@@ -168,13 +176,20 @@ const prazos = {
     },
     familia: {
         "Defesa em Ação de Alimentos (Processo de Pensão) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC / Lei 5.478/68"},
-        "Pagar ou Justificar (Atraso de Pensão sob pena de Prisão) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"},
+             "Pagar ou Justificar (Atraso de Pensão sob pena de Prisão) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"},
+       "Defesa em Interdição/Curatela - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 752 do CPC", contaDaAudiencia: true},
         "Prazo após Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
     },
     imobiliario: {
         "Defesa em Despejo (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 8.245/91"},
         "Desocupação Voluntária (Prazo para sair do imóvel) - 30 dias": {dias: 30, tipo: "corridos", base: "Lei do Inquilinato"}
     },
+  execucoes: {
+        "Pagamento de Imposto Atrasado (Execução Fiscal) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 8º da Lei 6.830/80"},
+    "Pagamento de Título Extrajudicial (Pagar dívida) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 829 do CPC"},
+        "Defesa contra Bloqueio ou Penhora de Bens - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 525 ou 917 do CPC"},
+        "Defesa (Oposição de Embargos à Execução) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 915 do CPC"}
+    }
     despachos: {
         "Cumprir Ordem Geral do Juiz (Manifestação) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218, §3º do CPC"},
         "Cumprir Ordem Específica (Prazo do Juiz) - 10 dias": {dias: 10, tipo: "uteis", base: "Prazo assinalado"},
@@ -188,11 +203,12 @@ const prazos = {
         "Resposta à Acusação (Defesa em processo criminal) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 do CPP"},
         "Apelação Criminal (Recurso contra sentença) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
     },
-    violencia: {
-        "Defesa em Medida Protetiva (Lei Maria da Penha) - 5 dias": {dias: 5, tipo: "corridos", base: "Lei Maria da Penha"}
+  violencia: {
+        "Defesa em Medida Protetiva (Se no papel diz 5 dias)": {dias: 5, tipo: "uteis", base: "Prazo fixado pelo Juiz (Analogia ao CPC)"},
+        "Defesa em Medida Protetiva (Se no papel diz 10 dias)": {dias: 10, tipo: "uteis", base: "Prazo fixado pelo Juiz (Regra local)"}
     },
     eca: {
-        "Defesa Prévia no ECA (Contado da audiência) - 3 dias": {dias: 3, tipo: "uteis", base: "Lei 9.099/95", contaDaAudiencia: true},
+       "Defesa Prévia do menor (Ato infracional - conta da audiência) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, § 1º do ECA", contaDaAudiencia: true},
        "Defesa dos pais (Para não a guarda) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 158 do ECA"},
         "Recurso no ECA (Infância e Juventude) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
     }
@@ -283,6 +299,16 @@ function calcular(){
             Fundamento: ${info.base} | Contagem: ${qtdDias} dias.
         </p>
     `;
+// ADICIONE ISTO AQUI:
+    if (cat === "violencia") {
+        resDiv.innerHTML += `
+            <div style="margin-top: 15px; padding: 10px; background: #fff3cd; color: #856404; border: 1px solid #ffeeba; border-radius: 8px; font-size: 0.85em; text-align: left;">
+                ⚠️ <strong>Atenção:</strong> O prazo na Medida Protetiva é definido pelo Juiz. 
+                Sempre confira o que está escrito no seu mandado. Se não houver prazo escrito, 
+                use a opção de 5 dias por segurança.
+            </div>
+        `;
+    }
 }
 
 function copiarEEnviarWhatsApp(){
@@ -296,24 +322,3 @@ function copiarEEnviarWhatsApp(){
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
