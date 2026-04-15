@@ -193,6 +193,7 @@ const prazos = {
     },
     eca: {
         "Defesa Prévia no ECA (Contado da audiência) - 3 dias": {dias: 3, tipo: "uteis", base: "Lei 9.099/95", contaDaAudiencia: true},
+       "Defesa dos pais (Para não a guarda) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 158 do ECA"},
         "Recurso no ECA (Infância e Juventude) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
     }
 };
@@ -247,7 +248,8 @@ function calcular(){
         let cont=0;
         while(cont<qtdDias){
             dataFinal.setDate(dataFinal.getDate()+1);
-            let iso = dataFinal.toISOString().split('T')[0];
+            let iso = dataFinal.toISOString().split('T')[0]
+            ;
             if(dataFinal.getDay()!==0 && dataFinal.getDay()!==6 && !feriados.includes(iso) && !emRecesso(iso)){
                 cont++;
             }
