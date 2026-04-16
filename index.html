@@ -140,8 +140,17 @@
         <option value="">Selecione a área primeiro</option>
     </select>
   
-    <label>Data que recebeu o papel (ou data da audiência de conciliação):</label>
-    <input type="date" id="data">
+  <div style="text-align: left; margin-top: 15px;">
+    <label style="display: block; font-weight: bold; color: var(--text-label); margin-bottom: 5px;">
+        Data que recebeu o papel (ou da audiência):
+    </label>
+    <div style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background: white;">
+        <input type="date" id="data" style="border: none; width: 100%; padding: 12px; font-size: 16px; outline: none;">
+        <div style="background: var(--bg-box); padding: 8px 12px; border-top: 1px solid var(--border-color); font-size: 0.75em; color: var(--color-primary); line-height: 1.3;">
+            ⚠️ <b>Atenção:</b> Se recebeu no fim de semana ou feriado, preencha com a data do <b>próximo dia útil</b>.
+        </div>
+    </div>
+</div>
 
     <div class="checkbox-container">
         <input type="checkbox" id="prazoDobro">
@@ -209,7 +218,7 @@ const prazos = {
     },
     eca: {
        "Defesa Prévia do menor (Ato infracional - conta da audiência) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, § 1º do ECA", contaDaAudiencia: true},
-       "Defesa dos pais (Para não a guarda) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 158 do ECA"},
+       "Defesa dos pais (Para não perder a guarda) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 158 do ECA"},
         "Recurso no ECA (Infância e Juventude) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
     }
 };
@@ -271,9 +280,18 @@ function calcular(){
             }
         }
     } else { 
-        dataFinal.setDate(dataFinal.getDate()+qtdDias); 
-    }
-
+       // Lógica para dias CORRIDOS
+    dataFinal.setDate(dataFinal.getDate() + qtdDias); 
+    
+    // NOVO: Checagem de Prorrogação
+    // Se cair em fim de semana ou feriado, pula para o próximo dia útil
+    let isoFinal = dataFinal.toISOString().split('T')[0];
+    while(dataFinal.getDay() === 0 || dataFinal.getDay() === 6 || feriados.includes(isoFinal) || emRecesso(isoFinal)) {
+        dataFinal.setDate(dataFinal.getDate() + 1);
+        isoFinal = dataFinal.toISOString().split('T')[0];
+   houveProrrogacaoVencimento = true;
+}
+}
     const resDiv = document.getElementById("resultado");
     const hoje = new Date(); hoje.setHours(0,0,0,0);
     const vencido = dataFinal < hoje;
@@ -288,7 +306,12 @@ function calcular(){
         ${isDobro?'<p>💙 Prazo em dobro (Defensoria Pública)</p>':''}
         ${vencido?'<p class="alerta">⛔ Prazo vencido!</p>':''}
         ${!vencido ? '<p>Faltam ' + diffTime + ' dias para o prazo final.</p>' : ''}
-       
+       ${houveProrrogacaoVencimento ? `
+    <div style="border: 1px solid #d88fa0; background-color: #fff5f7; padding: 10px; border-radius: 8px; margin: 10px 0; font-size: 0.85em; color: #7a4a52;">
+        <strong>📢 Nota de Prorrogação:</strong><br>
+        Como o dia final cai em um fim de semana ou feriado, seu prazo foi automaticamente estendido para o próximo dia útil, garantindo o seu direito de defesa.
+    </div>
+` : ''}
         <div style="background: #ffffff; padding: 12px; border-radius: 8px; margin: 15px 0; font-size: 0.85em; color: #666; border: 1px solid #f2d7dc; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
             <span class="satisfy" style="font-size: 1.2em;">Dica da Oficiala:</span><br>
             Este prazo é contado em <strong>dias ${info.tipo === 'uteis' ? 'úteis' : 'corridos'}</strong>.<br>
