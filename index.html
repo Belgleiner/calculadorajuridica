@@ -140,17 +140,8 @@
         <option value="">Selecione a área primeiro</option>
     </select>
   
-  <div style="text-align: left; margin-top: 15px;">
-    <label style="display: block; font-weight: bold; color: var(--text-label); margin-bottom: 5px;">
-        Data que recebeu o papel (ou da audiência):
-    </label>
-    <div style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background: white;">
-        <input type="date" id="data" style="border: none; width: 100%; padding: 12px; font-size: 16px; outline: none;">
-        <div style="background: var(--bg-box); padding: 8px 12px; border-top: 1px solid var(--border-color); font-size: 0.75em; color: var(--color-primary); line-height: 1.3;">
-            ⚠️ <b>Atenção:</b> Se recebeu no fim de semana ou feriado, preencha com a data do <b>próximo dia útil</b>.
-        </div>
-    </div>
-</div>
+<label>Data que recebeu o papel (ou data da audiência de conciliação):</label> <input type="date" id="data">
+ 
 
     <div class="checkbox-container">
         <input type="checkbox" id="prazoDobro">
@@ -342,13 +333,33 @@ function copiarEEnviarWhatsApp(){
     const textoCodificado = encodeURIComponent("📌 *Simulador de Prazos - Belizza Araújo*\n\n" + texto);
     window.open(`https://api.whatsapp.com/send?text=${textoCodificado}`,'_blank');
 }
-  document.getElementById('data').addEventListener('change', function() {
-    const dataEscolhida = new Date(this.value + "T00:00:00");
-    const diaSemana = dataEscolhida.getDay(); // 0 é domingo, 6 é sábado
+document.getElementById('data').addEventListener('change', function() {
+    if(!this.value) return; // Se estiver vazio, não faz nada
 
-    if (diaSemana === 0 || diaSemana === 6) {
-        alert("Você selecionou um fim de semana. Lembre-se: se você recebeu o mandado no sábado ou domingo, o prazo só começa a contar na segunda-feira. Considere ajustar para o próximo dia útil!");
-    }
+    let dataSelecionada = new Date(this.value + "T00:00:00");
+    let mudou = false;
+
+    // Função interna que checa se o dia é "ruim" para começar a contagem
+    const dataInvalida = (data) => {
+        let iso = data.toISOString().split('T')[0];
+        return data.getDay() === 0 || data.getDay() === 6 || feriados.includes(iso) || emRecesso(iso);
+    };
+
+    // Enquanto for fim de semana ou feriado, pula 1 dia para frente
+    while (dataInvalida(dataSelecionada)) {
+        dataSelecionada.setDate(dataSelecionada.getDate() + 1);
+        mudou = true;
+    }
+
+    if (mudou) {
+        // Atualiza o valor do campo no calendário
+        this.value = dataSelecionada.toISOString().split('T')[0];
+        
+        // Avisa o usuário do porquê da mudança (Pedagogia Jurídica)
+        alert("📌 Ajuste Automático:\nSua data foi ajustada para " + 
+              dataSelecionada.toLocaleDateString('pt-BR') + 
+              ", pois o prazo só começa a contar no primeiro dia útil seguinte.");
+    }
 });
 </script>
 
