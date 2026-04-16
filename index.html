@@ -264,6 +264,8 @@ function calcular(){
     const dataInicInput = document.getElementById("data").value;
     const isDobro = document.getElementById("prazoDobro").checked;
 
+let houveProrrogacaoVencimento = false;
+  
     if(!cat||!atoSel||!dataInicInput){alert("Preencha todos os campos."); return;}
     const info = prazos[cat][atoSel];
     let qtdDias = isDobro ? info.dias*2 : info.dias;
@@ -282,7 +284,7 @@ function calcular(){
     } else { 
        // Lógica para dias CORRIDOS
     dataFinal.setDate(dataFinal.getDate() + qtdDias); 
-    
+    }
     // NOVO: Checagem de Prorrogação
     // Se cair em fim de semana ou feriado, pula para o próximo dia útil
     let isoFinal = dataFinal.toISOString().split('T')[0];
@@ -341,6 +343,14 @@ function copiarEEnviarWhatsApp(){
     const textoCodificado = encodeURIComponent("📌 *Simulador de Prazos - Belizza Araújo*\n\n" + texto);
     window.open(`https://api.whatsapp.com/send?text=${textoCodificado}`,'_blank');
 }
+  document.getElementById('data').addEventListener('change', function() {
+    const dataEscolhida = new Date(this.value + "T00:00:00");
+    const diaSemana = dataEscolhida.getDay(); // 0 é domingo, 6 é sábado
+
+    if (diaSemana === 0 || diaSemana === 6) {
+        alert("Você selecionou um fim de semana. Lembre-se: se você recebeu o mandado no sábado ou domingo, o prazo só começa a contar na segunda-feira. Considere ajustar para o próximo dia útil!");
+    }
+});
 </script>
 
 </body>
