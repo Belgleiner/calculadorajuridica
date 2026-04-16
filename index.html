@@ -128,11 +128,12 @@
         <option value="familia">Família / Alimentos</option>
         <option value="imobiliario">Imobiliário (Despejo/Saída)</option>
       <option value="execucoes">Execução (Dívidas, Impostos e Penhoras)</option>
-        <option value="despachos">Ordens do Juiz (Despachos)</option>
+        <option value="despachos">Ordens do Juiz (Despachos, Atos e Decisões)</option>
         <option value="urgentes">Busca e Apreensão (veículos e outros)</option>
         <option value="criminal">Criminal</option>
         <option value="violencia">Violência Doméstica</option>
         <option value="eca">Infância e Juventude (ECA)</option>
+      <option value="omissao">Sem prazo no papel</option>
     </select>
 
     <label>Tipo de documento recebido:</label>
@@ -205,14 +206,21 @@ const prazos = {
     },
   violencia: {
         "Defesa em Medida Protetiva (Se no papel diz 5 dias)": {dias: 5, tipo: "uteis", base: "Prazo fixado pelo Juiz (Analogia ao CPC)"},
-        "Defesa em Medida Protetiva (Se no papel diz 10 dias)": {dias: 10, tipo: "uteis", base: "Prazo fixado pelo Juiz (Regra local)"}
+        "Defesa em Medida Protetiva (Se no papel diz 10 dias)": {dias: 10, tipo: "corridos", base: "Prazo fixado pelo Juiz (Regra local)"}
     },
     eca: {
        "Defesa Prévia do menor (Ato infracional - conta da audiência) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, § 1º do ECA", contaDaAudiencia: true},
        "Defesa dos pais (Para não perder a guarda) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 158 do ECA"},
         "Recurso no ECA (Infância e Juventude) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
-    }
-};
+    // Nova categoria específica para quando o juiz esquece o prazo
+        },
+  omissao: {
+        "O Juiz não escreveu o prazo (Prazo Geral) - 5 dias": {
+            dias: 5, 
+            tipo: "uteis", 
+            base: "Art. 218, §3º do CPC"
+        }
+    };
 
 const feriados = ["2026-01-01","2026-02-16","2026-02-17","2026-02-18","2026-03-06","2026-04-02","2026-04-03","2026-04-21","2026-05-01","2026-06-22","2026-06-24","2026-07-16","2026-08-10","2026-09-07","2026-10-12","2026-10-30","2026-11-02","2026-11-20","2026-12-08","2026-12-25"];
 
@@ -324,7 +332,15 @@ let houveProrrogacaoVencimento = false;
             </div>
         `;
     }
-}
+// ADICIONE ESTE NOVO BLOCO AQUI ABAIXO:
+    if (cat === "omissao") {
+        resDiv.innerHTML += `
+            <div style="margin-top: 15px; padding: 10px; background: #eaf1f6; color: #3b5a70; border: 1px solid #7da6c2; border-radius: 8px; font-size: 0.85em; text-align: left;">
+                ℹ️ <strong>O Juiz não marcou prazo?</strong> Quando o mandado não diz o tempo, a lei (Art. 218, §3º do CPC) define que o prazo é de <strong>5 dias úteis</strong>.
+            </div>
+        `;
+    }
+} // <--- Este é o fechamento final da função calcular
 
 function copiarEEnviarWhatsApp(){
     const resDiv = document.getElementById("resultado");
