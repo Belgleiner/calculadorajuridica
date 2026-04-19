@@ -165,10 +165,10 @@
 <script>
 const prazos = {
     civil: {
-        "Defesa no Processo (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 do CPC"},
+        "Defesa Inicial no Processo (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 do CPC"},
         "Recurso - Apelação (Reclamar da decisão final do Juiz) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
         "Embargos de Declaração (Pedir correção de erro no texto) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1.023 do CPC"},
-                "Prazo após Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
+                "Se o Prazo Conta da Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
     },
     juizado: {
         "Defesa ou Pagamento (Juizado Especial) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 9.099/95"},
@@ -202,15 +202,15 @@ const prazos = {
     },
     criminal: {
         "Resposta à Acusação (Defesa em processo criminal) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 do CPP"},
-        "Recurso - Apelação Criminal (Reclamar da decisão final do Juiz - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
+        "Recurso - Apelação Criminal (Reclamar da decisão final do Juiz) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
     },
   violencia: {
         "Defesa em Medida Protetiva (Se no papel diz 5 dias)": {dias: 5, tipo: "uteis", base: "Prazo fixado pelo Juiz (Analogia ao CPC)"},
         "Defesa em Medida Protetiva (Se no papel diz 10 dias)": {dias: 10, tipo: "corridos", base: "Prazo fixado pelo Juiz (Regra local)"},
- "Recurso - Apelação (Reclamar da decisão final do Juiz - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
+ "Recurso - Apelação (Reclamar da decisão final do Juiz) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
     },
     eca: {
-       "Defesa Prévia do Menor (Ato infracional - conta da audiência) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, § 1º do ECA", contaDaAudiencia: true},
+       "Defesa do Menor (Por ato infracional - conta da audiência) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, § 1º do ECA", contaDaAudiencia: true},
        "Defesa dos Pais (Para não perder a guarda) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 158 do ECA"},
         "Recurso (Reclamar da decisão final sobre o menor ou a guarda) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
     // Nova categoria específica para quando o juiz esquece o prazo
