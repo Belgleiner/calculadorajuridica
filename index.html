@@ -166,7 +166,7 @@
 const prazos = {
     civil: {
         "Defesa - Contestação (Para se defender do processo) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 do CPC"},
-        "Recurso - Apelação (Para reclamar da decisão do Juiz) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
+        "Recurso - Apelação (Para reclamar da decisão final do Juiz) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
         "Embargos de Declaração (Para pedir correção de erro no texto) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1.023 do CPC"},
                 "Prazo após Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
     },
@@ -189,7 +189,7 @@ const prazos = {
         "Pagamento de Imposto Atrasado (Execução Fiscal) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 8º da Lei 6.830/80"},
     "Pagamento de Título Extrajudicial (Pagar dívida) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 829 do CPC"},
         "Defesa contra Bloqueio ou Penhora de Bens - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 525 ou 917 do CPC"},
-        "Defesa (Oposição de Embargos à Execução) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 915 do CPC"}
+        "Defesa inicial (Oposição de Embargos à Execução) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 915 do CPC"}
     },
     despachos: {
         "Cumprir Ordem Geral do Juiz (Manifestação) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218, §3º do CPC"},
@@ -202,21 +202,21 @@ const prazos = {
     },
     criminal: {
         "Resposta à Acusação (Defesa em processo criminal) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 do CPP"},
-        "Apelação Criminal (Recurso contra sentença) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
+        "Recurso - Apelação Criminal (Para reclamar da decisão final do Juiz - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
     },
   violencia: {
         "Defesa em Medida Protetiva (Se no papel diz 5 dias)": {dias: 5, tipo: "uteis", base: "Prazo fixado pelo Juiz (Analogia ao CPC)"},
         "Defesa em Medida Protetiva (Se no papel diz 10 dias)": {dias: 10, tipo: "corridos", base: "Prazo fixado pelo Juiz (Regra local)"},
- "Apelação Criminal (Recurso contra sentença) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
+ "Recurso - Apelação (Para reclamar da decisão final do Juiz - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
     },
     eca: {
-       "Defesa Prévia do menor (Ato infracional - conta da audiência) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, § 1º do ECA", contaDaAudiencia: true},
-       "Defesa dos pais (Para não perder a guarda) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 158 do ECA"},
-        "Recurso no ECA (Infância e Juventude) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
+       "Defesa Prévia do Menor (Ato infracional - conta da audiência) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, § 1º do ECA", contaDaAudiencia: true},
+       "Defesa dos Pais (Para não perder a guarda) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 158 do ECA"},
+        "Recurso (Para reclamar da decisão final do menor ou dos pais) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
     // Nova categoria específica para quando o juiz esquece o prazo
         },
   omissao: {
-        "O Juiz não escreveu o prazo (Prazo Geral) - 5 dias": {
+        "O Juiz não escreveu prazo (Prazo Geral) - 5 dias": {
             dias: 5, 
             tipo: "uteis", 
             base: "Art. 218, §3º do CPC"}
