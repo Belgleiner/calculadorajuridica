@@ -165,25 +165,25 @@
 <script>
 const prazos = {
     civil: {
-        "Defesa - Contestação (Para se defender do processo) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 do CPC"},
-        "Recurso - Apelação (Para reclamar da decisão final do Juiz) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
-        "Embargos de Declaração (Para pedir correção de erro no texto) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1.023 do CPC"},
+        "Defesa no Processo (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 do CPC"},
+        "Recurso - Apelação (Reclamar da decisão final do Juiz) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
+        "Embargos de Declaração (Pedir correção de erro no texto) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1.023 do CPC"},
                 "Prazo após Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
     },
     juizado: {
         "Defesa ou Pagamento (Juizado Especial) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 9.099/95"},
-        "Recurso Inominado (Para reclamar da sentença) - 10 dias": {dias: 10, tipo: "uteis", base: "Art. 42 da Lei 9.099/95"},
+        "Recurso Inominado (Reclamar da sentença) - 10 dias": {dias: 10, tipo: "uteis", base: "Art. 42 da Lei 9.099/95"},
         "Embargos de Declaração (Dúvida na sentença) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 49 da Lei 9.099/95"}
     },
     familia: {
-        "Defesa em Ação de Alimentos (Processo de Pensão) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC / Lei 5.478/68"},
+        "Defesa em Ação de Alimentos (Processo de pensão) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC / Lei 5.478/68"},
              "Pagar ou Justificar (Atraso de Pensão sob pena de Prisão) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"},
        "Defesa em Interdição/Curatela - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 752 do CPC", contaDaAudiencia: true},
         "Prazo após Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
     },
     imobiliario: {
         "Defesa em Despejo (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 8.245/91"},
-        "Desocupação Voluntária (Prazo para sair do imóvel) - 30 dias": {dias: 30, tipo: "corridos", base: "Lei do Inquilinato"}
+        "Desocupação Voluntária (Para sair do imóvel) - 30 dias": {dias: 30, tipo: "corridos", base: "Lei do Inquilinato"}
     },
   execucoes: {
         "Pagamento de Imposto Atrasado (Execução Fiscal) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 8º da Lei 6.830/80"},
@@ -202,17 +202,17 @@ const prazos = {
     },
     criminal: {
         "Resposta à Acusação (Defesa em processo criminal) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 do CPP"},
-        "Recurso - Apelação Criminal (Para reclamar da decisão final do Juiz - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
+        "Recurso - Apelação Criminal (Reclamar da decisão final do Juiz - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
     },
   violencia: {
         "Defesa em Medida Protetiva (Se no papel diz 5 dias)": {dias: 5, tipo: "uteis", base: "Prazo fixado pelo Juiz (Analogia ao CPC)"},
         "Defesa em Medida Protetiva (Se no papel diz 10 dias)": {dias: 10, tipo: "corridos", base: "Prazo fixado pelo Juiz (Regra local)"},
- "Recurso - Apelação (Para reclamar da decisão final do Juiz - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
+ "Recurso - Apelação (Reclamar da decisão final do Juiz - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
     },
     eca: {
        "Defesa Prévia do Menor (Ato infracional - conta da audiência) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, § 1º do ECA", contaDaAudiencia: true},
        "Defesa dos Pais (Para não perder a guarda) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 158 do ECA"},
-        "Recurso (Para reclamar da decisão final do menor ou dos pais) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
+        "Recurso (Reclamar da decisão final sobre o menor ou a guarda) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
     // Nova categoria específica para quando o juiz esquece o prazo
         },
   omissao: {
