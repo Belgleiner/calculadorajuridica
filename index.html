@@ -346,7 +346,20 @@ let houveProrrogacaoVencimento = false;
 function copiarEEnviarWhatsApp(){
     const resDiv = document.getElementById("resultado");
     if(resDiv.style.display === "none"){ alert("Primeiro calcule o prazo!"); return; }
-    const texto = resDiv.innerText;
+    
+    // 1. Pegamos o conteúdo HTML original
+    let conteudoHTML = resDiv.innerHTML;
+    
+    // 2. Trocamos as tags <strong> e </strong> pelos asteriscos do WhatsApp
+    conteudoHTML = conteudoHTML.replace(/<strong>/gi, '*').replace(/<\/strong>/gi, '*');
+    
+    // 3. Criamos um elemento temporário invisível para limpar as outras tags HTML (como <p>, <div>)
+    let divTemp = document.createElement("div");
+    divTemp.innerHTML = conteudoHTML;
+    
+    // 4. Agora pegamos o texto que já contém os asteriscos e está sem código HTML
+    const texto = divTemp.innerText;
+    
     const textoCodificado = encodeURIComponent("📌 *Simulador de Prazos - Belizza Araújo*\n\n" + texto);
     window.open(`https://api.whatsapp.com/send?text=${textoCodificado}`,'_blank');
 }
