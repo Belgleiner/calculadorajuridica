@@ -326,8 +326,8 @@ let houveProrrogacaoVencimento = false;
 // MONTAGEM DO TEXTO BASE PARA WHATSAPP
     textoWhatsParaEnviar = `📌 *Simulador de Prazos - TJPE*%0A` +
         `----------------------------%0A` +
-        `*Documento:* ${atoSel}%0A` +
-        `*Prazo Final:* ${dataFinal.toLocaleDateString('pt-BR')}%0A` +
+         `🗓 *PRAZO FINAL:* ${dataFinal.toLocaleDateString('pt-BR')}%0A` +
+ `*Documento:* ${atoSel}%0A` +
         `*Contagem:* ${qtdDias} dias ${info.tipo === 'uteis' ? 'úteis' : 'corridos'}%0A` +
         `${isDobro ? '*Obs:* Prazo em dobro (Defensoria)%0A' : ''}` +
         `${houveProrrogacaoVencimento ? '*Nota:* Prorrogado p/ próximo dia útil.%0A' : ''}`;
