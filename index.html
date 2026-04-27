@@ -157,7 +157,7 @@
 
     <div class="checkbox-container">
         <input type="checkbox" id="prazoDobro">
-        <label for="prazoDobro">Sou assistido pela <strong>Defensoria Pública</strong> (Prazo em Dobro). <br>⚠️ Não marque em caso de prazo para pagamento ou desocupar imóvel. </label>
+        <label for="prazoDobro">Sou assistido pela <strong>Defensoria Pública</strong> (Prazo em Dobro). <br>⚠️ Não marque em caso de prazo para pagamento ou desocupar imóvel nem em prazos para o plano ou hospital. </label>
     </div>
 
     <button onclick="calcular()">Calcular Prazo Final</button>
@@ -187,46 +187,46 @@
 <script>
 const prazos = {
     civil: {
-        "Defesa Inicial no Processo (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 do CPC"},
+        "Defesa inicial no Processo (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 do CPC"},
         "Recurso - Apelação (Reclamar da decisão final do Juiz) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
 
         "Embargos de Declaração (Pedir correção de erro no texto) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1.023 do CPC"},
-                "Se o Prazo Conta da Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true},
+                "Se o prazo bonta da Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true},
             "Responder à defesa do réu (Réplica) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 350/351 do CPC"}
     },
     juizado: {
-        "Defesa ou Pagamento (Juizado Especial) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 9.099/95"},
+        "Defesa ou pagamento (Juizado Especial) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 9.099/95"},
         "Recurso Inominado (Reclamar da sentença) - 10 dias": {dias: 10, tipo: "uteis", base: "Art. 42 da Lei 9.099/95"},
         "Embargos de Declaração (Dúvida na sentença) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 49 da Lei 9.099/95"}
     },
     familia: {
         "Defesa em Ação de Alimentos (Para o réu falar sobre o pedido de pensão) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC / Lei 5.478/68"},
-             "Pagar ou Justificar (Atraso de Pensão sob pena de Prisão) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"},
+             "Pagar ou justificar (Atraso de Pensão sob pena de Prisão) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"},
       "Falar sobre a justificativa do devedor (Em caso de atraso de Pensão) - 10 dias": {dias: 10, tipo: "uteis", base: "Art. 528, §2º do CPC"},
        "Defesa em Interdição/Curatela - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 752 do CPC", contaDaAudiencia: true},
         "Prazo após Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
     },
     imobiliario: {
-        "Defesa em Despejo (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 8.245/91"},
-        "Desocupação Voluntária (Para sair do imóvel) - 30 dias": {dias: 30, tipo: "corridos", base: "Lei do Inquilinato"}
+        "Defesa em despejo (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 8.245/91"},
+        "Desocupação voluntária (Para sair do imóvel) - 30 dias": {dias: 30, tipo: "corridos", base: "Lei do Inquilinato"}
     },
   execucoes: {
-        "Pagamento de Imposto Atrasado (Execução Fiscal) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 8º da Lei 6.830/80"},
-    "Pagamento de Título Extrajudicial (Pagar dívida) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 829 do CPC"},
-        "Reclamar de Bloqueio ou Penhora de Bens - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 525 ou 917 do CPC"},
+        "Pagamento de imposto atrasado (Execução Fiscal) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 8º da Lei 6.830/80"},
+    "Pagamento de título extrajudicial (Pagar dívida) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 829 do CPC"},
+        "Reclamar de bloqueio ou penhora de bens - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 525 ou 917 do CPC"},
         "Defesa inicial (Oposição de Embargos à Execução) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 915 do CPC"}
     },
     despachos: {
-        "Cumprir Ordem Geral do Juiz (Manifestação e outros) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218, §3º do CPC"},
-        "Cumprir Ordem Específica (Prazo do Juiz) - 10 dias": {dias: 10, tipo: "uteis", base: "Prazo assinalado"},
-        "Cumprir Ordem Específica (Prazo do Juiz) - 15 dias": {dias: 15, tipo: "uteis", base: "Prazo assinalado"}
+        "Cumprir ordem geral do Juiz (Manifestação e outros) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218, §3º do CPC"},
+        "Cumprir ordem específica (Prazo do Juiz) - 10 dias": {dias: 10, tipo: "uteis", base: "Prazo assinalado"},
+        "Cumprir ordem específica (Prazo do Juiz) - 15 dias": {dias: 15, tipo: "uteis", base: "Prazo assinalado"}
     },
     urgentes: {
         "Defesa em Busca e Apreensão (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Dec-Lei 911/69"},
         "Pagamento para reaver veículo (Purgação da mora) - 5 dias": {dias: 5, tipo: "corridos", base: "Dec-Lei 911/69"}
     },
     criminal: {
-        "Resposta à Acusação (Defesa em processo criminal) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 do CPP"},
+        "Resposta à acusação (Defesa em processo criminal) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 do CPP"},
         "Recurso - Apelação Criminal (Reclamar da decisão final do Juiz) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"},
      "Responder a ordem do Juiz (Oferecer testemunhas ou juntar algo no processo) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 800, §3º do CPP"}
     },
@@ -236,22 +236,22 @@ const prazos = {
  "Recurso - Apelação (Reclamar da decisão final do Juiz) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
     },
     eca: {
-       "Defesa do Menor (Por ato infracional - conta da audiência) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, § 1º do ECA", contaDaAudiencia: true},
-       "Defesa dos Pais (Para não perder a guarda) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 158 do ECA"},
+       "Defesa do menor (Por ato infracional - conta da audiência) - 3 dias": {dias: 3, tipo: "corridos", base: "Art. 186, § 1º do ECA", contaDaAudiencia: true},
+       "Defesa dos pais (Para não perder a guarda) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 158 do ECA"},
         "Recurso (Reclamar da decisão final sobre o menor ou a guarda) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
         },
 saude: {
-    "Prazo para Plano ou Hospital cumprir decisão liminar - 24 horas": {dias: 24, tipo: "horas", base: "Decisão Judicial"},
-    "Prazo para Plano ou Hospital cumprir decisão liminar - 48 horas": {dias: 48, tipo: "horas", base: "Decisão Judicial"},
+    "Prazo para plano ou hospital cumprir Decisão Liminar - 24 horas": {dias: 24, tipo: "horas", base: "Decisão Judicial"},
+    "Prazo para pano ou hospital cumprir Decisão Liminar - 48 horas": {dias: 48, tipo: "horas", base: "Decisão Judicial"},
     "Manifestar se o remédio/cirurgia foi entregue/realizada - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218, §3º do CPC"},
-    "Recurso contra negativa de liminar (Agravo) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"}
+    "Recurso contra negativa de Liminar (Agravo) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"}
 },
   omissao: {
-        "O Juiz não escreveu prazo (Prazo Geral) - 5 dias": {
+        "O Juiz não escreveu prazo (Prazo geral) - 5 dias": {
             dias: 5, 
             tipo: "uteis", 
             base: "Art. 218, §3º do CPC"},
-     "O Juiz não escreveu prazo em processo criminal (Prazo Geral) - 5 dias": {
+     "O Juiz não escreveu prazo em processo criminal (Prazo geral) - 5 dias": {
             dias: 5, 
             tipo: "corridos", 
             base: "Art. 800, §3º do CPP"}
@@ -394,7 +394,7 @@ function calcular() {
 
         ${vencido ? `
             <div style="margin-top: 10px; padding: 12px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 8px; font-size: 0.85em; text-align: left;">
-                ⚠️ <strong>Prazo Vencido?</strong> Não se desespere! Procure a Defensoria Pública ou um advogado hoje mesmo para verificar se ainda cabe justificativa ou recurso.
+                ⚠️ <strong>Prazo Vencido?</strong> Não se desespere! Procure a Defensoria Pública ou um advogado hoje mesmo para ver se você ainda pode se justificar.
             </div>` : ''}
 
         ${avisoHoras}
