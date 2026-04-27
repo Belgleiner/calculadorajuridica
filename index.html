@@ -201,15 +201,18 @@
 
     <button id="btnWhats" onclick="copiarEEnviarWhatsApp()" style="margin-top:10px; background-color: #25d366; display:none;">Enviar para WhatsApp</button>
 
-  <div class="fluxo-transicao">
-    <p>Precisa de ajuda com os próximos passos?</p>
-    <div class="linha-decorativa"></div>
+  <div id="secao-pos-calculo" style="display: none;">
+    <div class="fluxo-transicao">
+        <p>Precisa de ajuda com os próximos passos?</p>
+        <div class="linha-decorativa"></div>
+    </div>
+
+    <div class="container-botoes-auxiliares">
+        <button class="btn-rosa">📂 O que levar ma Defensoria?</button>
+        <button class="btn-rosa">📞 Falar com a Defensoria</button>
+    </div>
 </div>
 
-<div class="container-botoes-auxiliares">
-    <button class="btn-rosa">📂 O que levar?</button>
-    <button class="btn-rosa">📞 Falar com a Defensoria</button>
-</div>
 
  
     <div class="aviso">
@@ -495,6 +498,13 @@ document.getElementById("btnWhats").style.display = "block";
 document.getElementById("botoesApoio").style.display = "flex";
   
 } // <--- Este é o fechamento final da função calcular
+
+function calcularPrazo() {
+    // ... seu código de cálculo atual ...
+
+    // Mostra a seção de ajuda após o cálculo
+    document.getElementById('secao-pos-calculo').style.display = 'block';
+}
 
 function copiarEEnviarWhatsApp() {
     if (textoWhatsParaEnviar !== "") {
