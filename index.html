@@ -209,15 +209,20 @@
 
     <button id="btnWhats" onclick="copiarEEnviarWhatsApp()" style="margin-top:10px; background-color: #25d366; display:none;">Enviar para WhatsApp</button>
 
-  <div id="secao-pos-calculo" style="display: none;">
+ <div id="secao-pos-calculo" style="display: none;">
     <div class="fluxo-transicao">
-        <p>Precisa de ajuda com os próximos passos?</p>
+        <p><strong>Próximos passos:</strong> Veja abaixo os documentos e contatos da Defensoria Pública para te ajudar.</p>
         <div class="linha-decorativa"></div>
     </div>
 
     <div class="container-botoes-auxiliares">
-        <button class="btn-rosa" onclick="abrirDocumentosDefensoria()">📂 O que levar na Defensoria?</button>
-        <button class="btn-rosa" onclick="abrirContatosDefensoria()">📞 Falar com a Defensoria</button>
+        <button class="btn-rosa" onclick="abrirDocumentosDefensoria()">
+            📂 Documentos Necessários
+        </button>
+        
+        <button class="btn-rosa" onclick="abrirContatosDefensoria()">
+            📍 Endereços e Contatos
+        </button>
     </div>
 </div>
 
@@ -475,7 +480,7 @@ ${info.tipo !== "horas" ? `
         `${isDobro ? '*Obs:* Prazo em dobro (Defensoria)%0A' : ''}` +
         `${houveProrrogacaoVencimento ? '*Nota:* Prorrogado p/ próximo dia útil.%0A' : ''}`;
   if (vencido) {
-    textoWhatsParaEnviar += `%0A%0A⚠️ *Atenção:* Este prazo já passou. Procure um advogado, Defensoria Pública ou Assistência Judiciária do Município rgentemente!`;
+    textoWhatsParaEnviar += `%0A%0A⚠️ *Atenção:* Este prazo já passou. Procure um advogado, Defensoria Pública ou Assistência Judiciária do Município urgentemente!`;
 }
 // ADICIONE ISTO AQUI:
     if (cat === "violencia") {
@@ -514,11 +519,22 @@ ${info.tipo !== "horas" ? `
 
 function copiarEEnviarWhatsApp() {
     if (textoWhatsParaEnviar !== "") {
-        window.open("https://api.whatsapp.com/send?text=" + textoWhatsParaEnviar, '_blank');
+        // Criamos o texto adicional com as informações da Defensoria
+        // %0A serve para "pular linha" no WhatsApp
+        let infoDefensoria = `%0A%0A📍 *INFORMAÇÕES DA DEFENSORIA:*%0A` +
+            `- Endereços: https://www.defensoria.pe.def.br/enderecos/capital/%0A` +
+            `- Documentos: https://www.defensoria.pe.def.br/documentacao_necessaria/%0A%0A` +
+            `*Importante:* Não perca o prazo! Procure ajuda hoje mesmo.`;
+
+        // Unimos o cálculo com as informações da Defensoria
+        let mensagemCompleta = textoWhatsParaEnviar + infoDefensoria;
+
+        window.open("https://api.whatsapp.com/send?text=" + mensagemCompleta, '_blank');
     } else {
         alert("Primeiro calcule o prazo!");
     }
 }
+
 document.getElementById('data').addEventListener('change', function() {
     if(!this.value) return; // Se estiver vazio, não faz nada
 
