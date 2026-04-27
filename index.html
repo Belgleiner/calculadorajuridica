@@ -156,6 +156,21 @@
 
     <button id="btnWhats" onclick="copiarEEnviarWhatsApp()" style="margin-top:10px; background-color: #25d366; display:none;">Enviar para WhatsApp</button>
 
+  <div class="linha-botoes" id="botoesApoio" style="display:none;">
+    <button onclick="abrirDocumentosDefensoria()" class="btn-defensoria">
+        📂 O que levar?
+    </button>
+
+    <button onclick="abrirContatosDefensoria()" class="btn-defensoria">
+        📞 Falar com a Defensoria
+    </button>
+</div>
+
+<div class="orientacao-final">
+    ⚖️ <strong>Importante:</strong><br>
+    O prazo já começou a contar. Procure atendimento o quanto antes para não perder seu direito.
+</div>
+  
     <div class="aviso">
         Ferramenta criada para auxiliar na contagem dos prazos judiciais. Não inclui os feriados municipais! <br>
         🌸 <span class="satisfy">Desenvolvido por Belizza Araújo – Oficiala de Justiça do TJPE</span>
@@ -432,6 +447,10 @@ function calcular() {
     textoWhatsParaEnviar += `%0A----------------------------%0A` +
         `*Dica da Oficiala:* Sempre que receber um papel da justiça, procure um advogado ou a Defensoria Pública! Leve o mandado (pode ser no celular) e seus documentos e confirme seu prazo com eles.%0A%0A` +
         `_Simulador por Belizza Araújo - Oficiala de Justiça do TJPE_`;
+  
+document.getElementById("btnWhats").style.display = "block";
+document.getElementById("botoesApoio").style.display = "flex";
+  
 } // <--- Este é o fechamento final da função calcular
 
 function copiarEEnviarWhatsApp() {
@@ -469,6 +488,15 @@ document.getElementById('data').addEventListener('change', function() {
               ", pois o prazo só começa a contar no primeiro dia útil seguinte.");
     }
 });
+
+function abrirDocumentosDefensoria() {
+    window.open("https://www.defensoria.pe.def.br/documentacao_necessaria/", "_blank");
+}
+
+function abrirContatosDefensoria() {
+    window.open("https://www.defensoria.pe.def.br/enderecos/capital/", "_blank");
+}
+  
 </script>
 
 </body>
