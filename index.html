@@ -494,17 +494,15 @@ ${info.tipo !== "horas" ? `
         `*Dica da Oficiala:* Sempre que receber um papel da justiça, procure um advogado ou a Defensoria Pública! Leve o mandado (pode ser no celular) e seus documentos e confirme seu prazo com eles.%0A%0A` +
         `_Simulador por Belizza Araújo - Oficiala de Justiça do TJPE_`;
   
-document.getElementById("btnWhats").style.display = "block";
-document.getElementById("botoesApoio").style.display = "flex";
+// ... final da função calcular() ...
   
-} // <--- Este é o fechamento final da função calcular
+    // MOSTRAR OS BOTÕES DE APOIO
+    document.getElementById("btnWhats").style.display = "block";
+    document.getElementById("secao-pos-calculo").style.display = "block"; // Mostra o divisor e os botões
+  
+} // <--- Fechamento da função calcular
 
-function calcularPrazo() {
-    // ... seu código de cálculo atual ...
-
-    // Mostra a seção de ajuda após o cálculo
-    document.getElementById('secao-pos-calculo').style.display = 'block';
-}
+// REMOVA a função calcularPrazo() que estava solta lá embaixo, para não dar conflito.
 
 function copiarEEnviarWhatsApp() {
     if (textoWhatsParaEnviar !== "") {
