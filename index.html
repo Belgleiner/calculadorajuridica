@@ -224,7 +224,7 @@ saude: {
     "Prazo para Plano ou Hospital cumprir decisão liminar - 48 horas": {dias: 48, tipo: "horas", base: "Decisão Judicial"},
     "Manifestar se o remédio/cirurgia foi entregue/realizada - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218, §3º do CPC"},
     "Recurso contra negativa de liminar (Agravo) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"}
-},  
+},
   omissao: {
         "O Juiz não escreveu prazo (Prazo Geral) - 5 dias": {
             dias: 5, 
@@ -234,7 +234,8 @@ saude: {
             dias: 5, 
             tipo: "corridos", 
             base: "Art. 800, §3º do CPP"}
-        }  
+        }
+};
 
 const feriados = ["2026-01-01","2026-02-16","2026-02-17","2026-02-18","2026-03-06","2026-04-02","2026-04-03","2026-04-21","2026-05-01","2026-06-22","2026-06-24","2026-07-16","2026-08-10","2026-09-07","2026-10-12","2026-10-30","2026-11-02","2026-11-20","2026-12-08","2026-12-25"];
 
@@ -259,15 +260,26 @@ function mudarTema(cl) {
     else if(cl === 'tema-cinza') meta.setAttribute("content", "#6c757d");
     else meta.setAttribute("content", "#b76e79");
 }
-    
-function carregarSubcategorias(){
+
+  function carregarSubcategorias() {
     const cat = document.getElementById("categoria").value;
     const ato = document.getElementById("ato");
-    ato.innerHTML='<option value="">Selecione o documento...</option>';
-    if(!cat||!prazos[cat]) return;
-    for(let item in prazos[cat]){
+    
+    // Limpa as opções atuais
+    ato.innerHTML = '<option value="">Selecione o documento...</option>';
+if (cat !== "" && prazos[cat]) {
+        // Percorre as chaves do objeto para a categoria selecionada
+        for (let item in prazos[cat]) {
+            let opt = document.createElement("option");
+            opt.value = item;
+            opt.text = item;
+            ato.appendChild(opt);
+        }
+    } else {
         let opt = document.createElement("option");
-        opt.value = item; opt.text = item; ato.appendChild(opt);
+        opt.value = "";
+        opt.text = "Selecione a área primeiro";
+        ato.appendChild(opt);
     }
 }
 let textoWhatsParaEnviar = "";
