@@ -71,15 +71,50 @@
     .btn-cor { width: 25px; height: 25px; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
     .alerta { color: #d9534f; font-weight: bold; margin-top: 10px; padding: 10px; background: #f9d6d5; border-radius: 5px; text-align: center; }
 
-.linha-botoes {
-    display: flex;
-    gap: 12px; /* aumente aqui (ex: 12px ou 15px) */
-    margin-top: 10px;}
-
-  .linha-botoes button {
-    flex: 1;
-    padding: 12px;
+.fluxo-transicao {
+    text-align: center;
+    margin: 20px 0 10px 0;
+    color: #8c8c8c; /* Tom de cinza suave para não brigar com o rosa */
 }
+
+.fluxo-transicao p {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-family: sans-serif;
+}
+
+.linha-decorativa {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #d3818e, transparent);
+    width: 80%;
+    margin: 0 auto;
+    opacity: 0.5;
+}
+
+.container-botoes-auxiliares {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 10px;
+}
+
+.btn-rosa {
+    flex: 1;
+    background-color: #d3818e; /* Cor baseada no seu print */
+    color: white;
+    border: none;
+    padding: 12px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
   
     @media (max-width: 500px) { h1 { font-size: 1.3em; } }
 </style>
@@ -166,14 +201,14 @@
 
     <button id="btnWhats" onclick="copiarEEnviarWhatsApp()" style="margin-top:10px; background-color: #25d366; display:none;">Enviar para WhatsApp</button>
 
-  <div class="linha-botoes" id="botoesApoio" style="display:none;">
-    <button onclick="abrirDocumentosDefensoria()" class="btn-defensoria">
-        📂 O que levar?
-    </button>
+  <div class="fluxo-transicao">
+    <p>Precisa de ajuda com os próximos passos?</p>
+    <div class="linha-decorativa"></div>
+</div>
 
-    <button onclick="abrirContatosDefensoria()" class="btn-defensoria">
-        📞 Falar com a Defensoria
-    </button>
+<div class="container-botoes-auxiliares">
+    <button class="btn-rosa">📂 O que levar?</button>
+    <button class="btn-rosa">📞 Falar com a Defensoria</button>
 </div>
 
  
