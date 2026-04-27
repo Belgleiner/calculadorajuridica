@@ -407,10 +407,12 @@ function calcular() {
                 <strong>📢 Nota de Prorrogação:</strong> O prazo final caiu em fim de semana ou feriado, por isso foi estendido para o próximo dia útil.
             </div>` : ''}
 
+${info.tipo !== "horas" ? `
         <div style="background: #ffffff; padding: 12px; border-radius: 8px; margin: 15px 0; font-size: 0.85em; color: #666; border: 1px solid #f2d7dc;">
             <span class="satisfy" style="font-size: 1.2em; color: var(--color-primary);">Dica da Oficiala:</span><br>
             Este prazo é contado em <strong>dias ${info.tipo === 'uteis' ? 'úteis' : 'corridos'}</strong>. Confirme a data final sempre com Advogado(a), Defensoria Pública e Assistência Judiciária do Município.
         </div>
+        ` : ""}
 
         <p style="margin-top:10px; font-size:0.75em; color:#999; text-align: center;">
             Fundamento: ${info.base} | Contagem: ${qtdDias} dias.
