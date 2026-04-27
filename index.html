@@ -125,15 +125,17 @@
         <option value="">Selecione a área...</option>
         <option value="civil">Cível (Justiça Comum)</option>
         <option value="juizado">Juizado Especial (Pequenas Causas)</option>
-        <option value="familia">Família / Alimentos</option>
+        <option value="familia">Família e Alimentos</option>
         <option value="imobiliario">Imobiliário (Despejo/Saída)</option>
       <option value="execucoes">Execução (Dívidas, Impostos e Penhoras)</option>
-        <option value="despachos">Ordens do Juiz (Despachos, Atos e Decisões)</option>
+        <option value="despachos">Ordens do Juiz em Processo Não Criminal (Despachos, Atos e Decisões)</option>
         <option value="urgentes">Busca e Apreensão (Veículos e Outros)</option>
         <option value="criminal">Criminal</option>
-        <option value="violencia">Violência Doméstica</option>
-        <option value="eca">Infância e Juventude (ECA)</option>
+        <option value="violencia">Violência Doméstica (Medidas Protetivas/Maria da Penha)</option>
+        <option value="eca">Infância e Juventude (Direitos de Crianças e Adolescentes)</option>
+      <option value="saude">Saúde e Medicamentos (Medicamentos, Cirurgias e Planos)</option> 
       <option value="omissao">Sem prazo no papel</option>
+     
     </select>
 
     <label>Tipo de documento recebido:</label>
@@ -167,8 +169,10 @@ const prazos = {
     civil: {
         "Defesa Inicial no Processo (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 do CPC"},
         "Recurso - Apelação (Reclamar da decisão final do Juiz) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
+
         "Embargos de Declaração (Pedir correção de erro no texto) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1.023 do CPC"},
-                "Se o Prazo Conta da Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
+                "Se o Prazo Conta da Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true},
+            "Responder à defesa do réu (Réplica) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 350/351 do CPC"}
     },
     juizado: {
         "Defesa ou Pagamento (Juizado Especial) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 9.099/95"},
@@ -176,8 +180,9 @@ const prazos = {
         "Embargos de Declaração (Dúvida na sentença) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 49 da Lei 9.099/95"}
     },
     familia: {
-        "Defesa em Ação de Alimentos (Processo de pensão) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC / Lei 5.478/68"},
+        "Defesa em Ação de Alimentos (Para o réu falar sobre o pedido de pensão) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC / Lei 5.478/68"},
              "Pagar ou Justificar (Atraso de Pensão sob pena de Prisão) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"},
+      "Falar sobre a justificativa do devedor (Em caso de atraso de Pensão) - 10 dias": {dias: 10, tipo: "uteis", base: "Art. 528, §2º do CPC"},
        "Defesa em Interdição/Curatela - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 752 do CPC", contaDaAudiencia: true},
         "Prazo após Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
     },
@@ -188,11 +193,11 @@ const prazos = {
   execucoes: {
         "Pagamento de Imposto Atrasado (Execução Fiscal) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 8º da Lei 6.830/80"},
     "Pagamento de Título Extrajudicial (Pagar dívida) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 829 do CPC"},
-        "Defesa contra Bloqueio ou Penhora de Bens - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 525 ou 917 do CPC"},
+        "Reclamar de Bloqueio ou Penhora de Bens - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 525 ou 917 do CPC"},
         "Defesa inicial (Oposição de Embargos à Execução) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 915 do CPC"}
     },
     despachos: {
-        "Cumprir Ordem Geral do Juiz (Manifestação) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218, §3º do CPC"},
+        "Cumprir Ordem Geral do Juiz (Manifestação e outros) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218, §3º do CPC"},
         "Cumprir Ordem Específica (Prazo do Juiz) - 10 dias": {dias: 10, tipo: "uteis", base: "Prazo assinalado"},
         "Cumprir Ordem Específica (Prazo do Juiz) - 15 dias": {dias: 15, tipo: "uteis", base: "Prazo assinalado"}
     },
@@ -202,7 +207,8 @@ const prazos = {
     },
     criminal: {
         "Resposta à Acusação (Defesa em processo criminal) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 396 do CPP"},
-        "Recurso - Apelação Criminal (Reclamar da decisão final do Juiz) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"}
+        "Recurso - Apelação Criminal (Reclamar da decisão final do Juiz) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 593 do CPP"},
+     "Responder a ordem do Juiz (Oferecer testemunhas ou juntar algo no processo) - 5 dias": {dias: 5, tipo: "corridos", base: "Art. 800, §3º do CPP"}
     },
   violencia: {
         "Defesa em Medida Protetiva (Se no papel diz 5 dias)": {dias: 5, tipo: "uteis", base: "Prazo fixado pelo Juiz (Analogia ao CPC)"},
@@ -215,11 +221,21 @@ const prazos = {
         "Recurso (Reclamar da decisão final sobre o menor ou a guarda) - 10 dias": {dias: 10, tipo: "corridos", base: "Art. 198 do ECA"}
     // Nova categoria específica para quando o juiz esquece o prazo
         },
+saude: {
+    "Prazo para Plano ou Hospital cumprir decisão liminar - 24 horas": {dias: 24, tipo: "horas", base: "Decisão Judicial"},
+    "Prazo para Plano ou Hospital cumprir decisão liminar - 48 horas": {dias: 48, tipo: "horas", base: "Decisão Judicial"},
+    "Manifestar se o remédio/cirurgia foi entregue/realizada - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 218, §3º do CPC"},
+    "Recurso contra negativa de liminar (Agravo) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"}
+},  
   omissao: {
         "O Juiz não escreveu prazo (Prazo Geral) - 5 dias": {
             dias: 5, 
             tipo: "uteis", 
-            base: "Art. 218, §3º do CPC"}
+            base: "Art. 218, §3º do CPC"},
+     "O Juiz não escreveu prazo em processo criminal (Prazo Geral) - 5 dias": {
+            dias: 5, 
+            tipo: "corridos", 
+            base: "Art. 800, §3º do CPP"}
         }
     };
 
@@ -258,80 +274,131 @@ function carregarSubcategorias(){
     }
 }
 let textoWhatsParaEnviar = "";
-function calcular(){
+  
+function calcular() {
     const cat = document.getElementById("categoria").value;
     const atoSel = document.getElementById("ato").value;
     const dataInicInput = document.getElementById("data").value;
     const isDobro = document.getElementById("prazoDobro").checked;
 
-let houveProrrogacaoVencimento = false;
-  
-    if(!cat||!atoSel||!dataInicInput){alert("Preencha todos os campos."); return;}
-    const info = prazos[cat][atoSel];
-    let qtdDias = isDobro ? info.dias*2 : info.dias;
-    let dataFinal = new Date(dataInicInput+"T00:00:00");
+    if (!cat || !atoSel || !dataInicInput) {
+        alert("Preencha todos os campos.");
+        return;
+    }
 
-    if(info.tipo==="uteis"){
-        let cont=0;
-        while(cont<qtdDias){
-            dataFinal.setDate(dataFinal.getDate()+1);
-            let iso = dataFinal.toISOString().split('T')[0]
-            ;
-            if(dataFinal.getDay()!==0 && dataFinal.getDay()!==6 && !feriados.includes(iso) && !emRecesso(iso)){
+    const info = prazos[cat][atoSel];
+    let qtdDias = isDobro ? info.dias * 2 : info.dias;
+    let dataFinal = new Date(dataInicInput + "T00:00:00");
+    let houveProrrogacaoVencimento = false;
+    let avisoHoras = "";
+
+    // 1. Lógica de Contagem
+    if (info.tipo === "horas") {
+        let diasParaSomar = info.dias / 24;
+// Criamos uma cópia apenas para o exemplo do alerta não bugar se o código rodar duas vezes
+        let dataExemplo = new Date(dataInicInput + "T00:00:00");
+        dataExemplo.setDate(dataExemplo.getDate() + diasParaSomar);
+      
+        dataFinal.setDate(dataFinal.getDate() + diasParaSomar);
+        
+        avisoHoras = `
+            <div style="background-color: #fff3cd; color: #856404; padding: 12px; border-radius: 8px; border: 1px solid #ffeeba; margin: 10px 0; font-size: 0.9em; text-align: left;">
+                ⏰ <strong>Atenção ao Horário:</strong><br>
+                Este prazo é contado em horas. O prazo termina <strong>exatamente no mesmo horário</strong> em que o documento foi entregue.
+                <br><small>Ex: Se recebeu às 14h, vence às 14h de ${dataFinal.toLocaleDateString('pt-BR')}.</small>
+            </div>`;
+    } else if (info.tipo === "uteis") {
+        let cont = 0;
+        while (cont < qtdDias) {
+            dataFinal.setDate(dataFinal.getDate() + 1);
+            let iso = dataFinal.toISOString().split('T')[0];
+            if (dataFinal.getDay() !== 0 && dataFinal.getDay() !== 6 && !feriados.includes(iso) && !emRecesso(iso)) {
                 cont++;
             }
         }
-    } else { 
-       // Lógica para dias CORRIDOS
-    dataFinal.setDate(dataFinal.getDate() + qtdDias); 
+    } else {
+        dataFinal.setDate(dataFinal.getDate() + qtdDias);
     }
-    // NOVO: Checagem de Prorrogação
-    // Se cair em fim de semana ou feriado, pula para o próximo dia útil
-    let isoFinal = dataFinal.toISOString().split('T')[0];
-    while(dataFinal.getDay() === 0 || dataFinal.getDay() === 6 || feriados.includes(isoFinal) || emRecesso(isoFinal)) {
-        dataFinal.setDate(dataFinal.getDate() + 1);
-        isoFinal = dataFinal.toISOString().split('T')[0];
-   houveProrrogacaoVencimento = true;
-}
+
+    // 2. Checagem de Prorrogação (apenas para dias úteis/corridos)
+    if (info.tipo !== "horas") {
+        let isoFinal = dataFinal.toISOString().split('T')[0];
+        while (dataFinal.getDay() === 0 || dataFinal.getDay() === 6 || feriados.includes(isoFinal) || emRecesso(isoFinal)) {
+            dataFinal.setDate(dataFinal.getDate() + 1);
+            isoFinal = dataFinal.toISOString().split('T')[0];
+            houveProrrogacaoVencimento = true;
+        }
+    }
+
+    // 3. Status de Vencimento e Cores
     const resDiv = document.getElementById("resultado");
-    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    const hoje = new Date(); 
+    hoje.setHours(0,0,0,0);
     const vencido = dataFinal < hoje;
     const diffTime = Math.ceil((dataFinal - hoje) / (1000 * 60 * 60 * 24));
 
-    resDiv.style.display="block";
-    document.getElementById("btnWhats").style.display="block";
-    
+    let corDestaque = "var(--color-primary)";
+    let iconeStatus = "📅";
+
+    if (vencido) {
+        corDestaque = "#d9534f"; // Vermelho
+        iconeStatus = "⛔";
+    } else if (diffTime <= 3) {
+        corDestaque = "#f0ad4e"; // Laranja
+        iconeStatus = "⚠️";
+    }
+
+    // 4. Montagem do HTML
+    resDiv.style.display = "block";
+    document.getElementById("btnWhats").style.display = "block";
+
     resDiv.innerHTML = `
-        <p>📅 <strong>Prazo Final:</strong> ${dataFinal.toLocaleDateString('pt-BR')}</p>
-        ${info.contaDaAudiencia?'<p>⚖️ Contagem da audiência</p>':''}
-        ${isDobro?'<p>💙 Prazo em dobro (Defensoria Pública)</p>':''}
-        ${vencido?'<p class="alerta">⛔ Prazo vencido!</p>':''}
-        ${!vencido ? '<p>Faltam ' + diffTime + ' dias para o prazo final.</p>' : ''}
-       ${houveProrrogacaoVencimento ? `
-    <div style="border: 1px solid #d88fa0; background-color: #fff5f7; padding: 10px; border-radius: 8px; margin: 10px 0; font-size: 0.85em; color: #7a4a52;">
-        <strong>📢 Nota de Prorrogação:</strong><br>
-        Como o dia final cai em um fim de semana ou feriado, seu prazo foi automaticamente estendido para o próximo dia útil, garantindo o seu direito de defesa.
-    </div>
-` : ''}
-        <div style="background: #ffffff; padding: 12px; border-radius: 8px; margin: 15px 0; font-size: 0.85em; color: #666; border: 1px solid #f2d7dc; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
-            <span class="satisfy" style="font-size: 1.2em;">Dica da Oficiala:</span><br>
-            Este prazo é contado em <strong>dias ${info.tipo === 'uteis' ? 'úteis' : 'corridos'}</strong>.<br>
-            Procure um advogado ou a Defensoria Pública com seus documentos e o mandado recebido e sempre confirme seu prazo!<br>
-        
+        <div style="border: 2px solid ${corDestaque}; padding: 15px; border-radius: 12px; background: white; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+            <p style="font-size: 1.2em; color: ${corDestaque}; margin: 0; font-weight: bold; text-align: center;">
+                ${iconeStatus} Prazo Final: ${dataFinal.toLocaleDateString('pt-BR')}
+            </p>
+            <p style="text-align: center; margin: 10px 0 0 0; font-size: 0.95em; color: #555;">
+                ${vencido ? `<strong style="color: ${corDestaque};">Este prazo já venceu!</strong>` : `Faltam <strong>${diffTime}</strong> dias para o vencimento.`}
+            </p>
         </div>
-        <p style="margin-top:10px;font-size:0.8em;color:#666;">
+
+        ${vencido ? `
+            <div style="margin-top: 10px; padding: 12px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 8px; font-size: 0.85em; text-align: left;">
+                ⚠️ <strong>Prazo Vencido?</strong> Não se desespere! Procure a Defensoria Pública ou um advogado hoje mesmo para verificar se ainda cabe justificativa ou recurso.
+            </div>` : ''}
+
+        ${avisoHoras}
+
+        ${info.contaDaAudiencia ? '<p style="font-size: 0.9em; color: #666;">⚖️ Contagem a partir da audiência.</p>' : ''}
+        ${isDobro ? '<p style="font-size: 0.9em; color: var(--color-primary);">💙 Prazo em dobro (Defensoria Pública).</p>' : ''}
+
+        ${houveProrrogacaoVencimento ? `
+            <div style="border: 1px solid #d88fa0; background-color: #fff5f7; padding: 10px; border-radius: 8px; margin: 10px 0; font-size: 0.85em; color: #7a4a52;">
+                <strong>📢 Nota de Prorrogação:</strong> O prazo final caiu em fim de semana ou feriado, por isso foi estendido para o próximo dia útil.
+            </div>` : ''}
+
+        <div style="background: #ffffff; padding: 12px; border-radius: 8px; margin: 15px 0; font-size: 0.85em; color: #666; border: 1px solid #f2d7dc;">
+            <span class="satisfy" style="font-size: 1.2em; color: var(--color-primary);">Dica da Oficiala:</span><br>
+            Este prazo é contado em <strong>dias ${info.tipo === 'uteis' ? 'úteis' : 'corridos'}</strong>. Confirme sempre com sua assistência jurídica!
+        </div>
+
+        <p style="margin-top:10px; font-size:0.75em; color:#999; text-align: center;">
             Fundamento: ${info.base} | Contagem: ${qtdDias} dias.
         </p>
     `;
+}
 // MONTAGEM DO TEXTO BASE PARA WHATSAPP
     textoWhatsParaEnviar = `📌 *Simulador de Prazos - TJPE*%0A` +
         `----------------------------%0A` +
          `🗓 *PRAZO FINAL:* ${dataFinal.toLocaleDateString('pt-BR')}%0A` +
- `*Documento:* ${atoSel}%0A` +
+ `*Documento:* ${atoSel}%0A` +
+
         `*Contagem:* ${qtdDias} dias ${info.tipo === 'uteis' ? 'úteis' : 'corridos'}%0A` +
         `${isDobro ? '*Obs:* Prazo em dobro (Defensoria)%0A' : ''}` +
         `${houveProrrogacaoVencimento ? '*Nota:* Prorrogado p/ próximo dia útil.%0A' : ''}`;
-  
+  if (vencido) {
+    textoWhatsParaEnviar += `%0A%0A⚠️ *Atenção:* Este prazo já passou. Procure um advogado, Defensoria Pública ou Assistência Judiciária do Município rgentemente!`;
+}
 // ADICIONE ISTO AQUI:
     if (cat === "violencia") {
         resDiv.innerHTML += `
