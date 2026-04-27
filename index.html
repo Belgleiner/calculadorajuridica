@@ -65,7 +65,15 @@
     
     .resultado { margin-top: 25px; background: var(--bg-box); padding: 20px; border-radius: 10px; text-align: left; border-left: 5px solid var(--color-secondary); display: none; box-sizing: border-box; }
     #btnWhats { background-color: #25d366; display: none; margin-top: 10px; }
-    .aviso { margin-top: 30px; font-size: 0.85em; color: #999; line-height: 1.5; }
+       .aviso { 
+        margin-top: 60px; /* Aumentei de 30px para 60px para dar mais distância */
+        font-size: 0.75em; /* Diminuí de 0.85em para 0.75em para ficar bem discreto */
+        color: #999; 
+        line-height: 1.5; 
+        border-top: 1px solid #eee; /* Adicionei uma linha sutil para separar bem do conteúdo anterior */
+        padding-top: 15px;
+    }
+
     
     .seletor-cor { background: #eee; padding: 10px; border-radius: 8px; display: inline-flex; gap: 10px; margin-bottom: 15px; align-items: center; }
     .btn-cor { width: 25px; height: 25px; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
