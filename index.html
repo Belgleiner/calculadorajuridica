@@ -375,12 +375,8 @@ function calcular() {
 
     // 1. Lógica de Contagem
     if (info.tipo === "horas") {
-        let diasParaSomar = info.dias / 24;
-// Criamos uma cópia apenas para o exemplo do alerta não bugar se o código rodar duas vezes
-        let dataExemplo = new Date(dataInicInput + "T00:00:00");
-        dataExemplo.setDate(dataExemplo.getDate() + diasParaSomar);
-      
-        dataFinal.setDate(dataFinal.getDate() + diasParaSomar);
+        // Prazos em horas são contínuos (não param em fins de semana/feriados)
+        dataFinal.setHours(dataFinal.getHours() + info.dias);
         
         avisoHoras = `
             <div style="background-color: #fff3cd; color: #856404; padding: 12px; border-radius: 8px; border: 1px solid #ffeeba; margin: 10px 0; font-size: 0.9em; text-align: left;">
