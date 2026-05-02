@@ -534,6 +534,9 @@ function copiarEEnviarWhatsApp() {
 document.getElementById('data').addEventListener('change', function() {
     if(!this.value) return; // Se estiver vazio, não faz nada
 
+    if (cat === "saude") return;
+
+
     let dataSelecionada = new Date(this.value + "T00:00:00");
     let mudou = false;
 
