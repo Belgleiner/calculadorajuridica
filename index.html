@@ -369,6 +369,8 @@ function calcular() {
 
     const info = prazos[cat][atoSel];
     let qtdDias = isDobro ? info.dias * 2 : info.dias;
+   // NOVO: Define se a palavra usada será "dias" ou "horas"
+    let unidadeTempo = (info.tipo === "horas") ? "horas" : "dias";
     let dataFinal = new Date(dataInicInput + "T00:00:00");
     let houveProrrogacaoVencimento = false;
     let avisoHoras = "";
@@ -462,7 +464,7 @@ ${info.tipo !== "horas" ? `
         ` : ""}
 
         <p style="margin-top:10px; font-size:0.75em; color:#999; text-align: center;">
-            Fundamento: ${info.base} | Contagem: ${qtdDias} dias.
+            Fundamento: ${info.base} | Contagem: ${qtdDias} ${unidadeTempo}.
         </p>
     `;
 
@@ -472,7 +474,7 @@ ${info.tipo !== "horas" ? `
          `🗓 *PRAZO FINAL:* ${dataFinal.toLocaleDateString('pt-BR')}%0A` +
  `*Documento:* ${atoSel}%0A` +
 
-        `*Contagem:* ${qtdDias} dias ${info.tipo === 'uteis' ? 'úteis' : 'corridos'}%0A` +
+        `*Contagem:* ${qtdDias} ${unidadeTempo} ${info.tipo === 'uteis' ? 'úteis' : (info.tipo === 'horas' ? '' : 'corridos')}%0A` +
         `${isDobro ? '*Obs:* Prazo em dobro (Defensoria)%0A' : ''}` +
         `${houveProrrogacaoVencimento ? '*Nota:* Prorrogado p/ próximo dia útil.%0A' : ''}`;
   if (vencido) {
