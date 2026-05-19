@@ -500,6 +500,24 @@ ${info.tipo !== "horas" ? `
         `;
    textoWhatsParaEnviar += `%0Aℹ️ *Nota:* Como não havia prazo no mandado, aplicou-se o Art. 218, §3º do CPC (5 dias úteis).`;
     }
+
+// AVISO DO PERÍODO DE SUSPENSÃO DOS ADVOGADOS (20 DE DEZEMBRO A 20 DE JANEIRO)
+const dataVerificacao = new Date(dataInicInput + "T00:00:00");
+const mesSetado = dataVerificacao.getMonth(); // 11 = Dezembro, 0 = Janeiro
+const diaSetado = dataVerificacao.getDate();
+
+const ehDezembroSuspenso = (mesSetado === 11 && diaSetado >= 20);
+const ehJaneiroSuspenso = (mesSetado === 0 && diaSetado <= 20);
+
+if ((ehDezembroSuspenso || ehJaneiroSuspenso) && cat !== "saude") {
+    resDiv.innerHTML += `
+        <div style="margin-top: 15px; padding: 12px; background: #e2f0d9; color: #385723; border: 1px solid #a9d18e; border-radius: 8px; font-size: 0.85em; text-align: left;">
+            ⚖️ <strong>Nota sobre o Fim de Ano (20/12 a 20/01):</strong> Entre essas datas, a maioria dos prazos dos advogados fica suspensa. Porém, <strong>não espere o recesso acabar!</strong> Procure a Defensoria Pública ou seu advogado imediatamente para que eles tenham tempo de analisar o seu caso.
+        </div>
+    `;
+    textoWhatsParaEnviar += `%0A⚖️ *Nota:* Entre 20/12 e 20/01 os prazos dos advogados suspendem. Não espere acabar, procure ajuda logo!`;
+}
+  
   // FINALIZAÇÃO DO TEXTO DO WHATSAPP COM ASSINATURA
     textoWhatsParaEnviar += `%0A----------------------------%0A` +
         `*Dica da Oficiala:* Sempre que receber um papel da justiça, procure um advogado ou a Defensoria Pública! Leve o mandado (pode ser no celular) e seus documentos e confirme seu prazo com eles.%0A%0A` +
