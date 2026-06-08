@@ -474,7 +474,8 @@ ${info.tipo !== "horas" ? `
     textoWhatsParaEnviar = `📌 *Simulador de Prazos - TJPE*%0A` +
         `----------------------------%0A` +
          `🗓 *PRAZO FINAL:* ${dataFinal.toLocaleDateString('pt-BR')}%0A` +
- `*Documento:* ${atoSel}%0A` +
+ `*Categoria:* ${categoriaSel}%0A` +
+      `*Documento:* ${atoSel}%0A` +
 
         `*Contagem:* ${qtdDias} ${unidadeTempo} ${info.tipo === 'uteis' ? 'úteis' : (info.tipo === 'horas' ? '' : 'corridos')}%0A` +
         `${isDobro ? '*Obs:* Prazo em dobro (Defensoria)%0A' : ''}` +
