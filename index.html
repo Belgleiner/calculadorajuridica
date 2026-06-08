@@ -178,7 +178,7 @@
         <option value="">Selecione a área...</option>
         <option value="civil">Cível (Justiça Comum)</option>
         <option value="juizado">Juizado Especial (Pequenas Causas)</option>
-        <option value="familia">Família e Alimentos</option>
+        <option value="familia">Família (Curatela, Guarda, Diórcio e Alimentos)</option>
         <option value="imobiliario">Imobiliário (Despejo/Saída)</option>
       <option value="execucoes">Execução (Dívidas, Impostos e Penhoras)</option>
         <option value="despachos">Ordens do Juiz em Processo Não Criminal (Despachos, Atos e Decisões)</option>
@@ -240,10 +240,10 @@ const prazos = {
     civil: {
         "Defesa inicial no Processo (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 do CPC"},
         "Recurso - Apelação (Reclamar da decisão final do Juiz) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
-
         "Embargos de Declaração (Pedir correção de erro no texto) - 5 dias": {dias: 5, tipo: "uteis", base: "Art. 1.023 do CPC"},
-                "Se o prazo bonta da Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true},
-            "Responder à defesa do réu (Réplica) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 350/351 do CPC"}
+        "Se o prazo conta da Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true},
+       "Responder à defesa do réu (Réplica) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 350/351 do CPC"},
+      "Cumprir decisão de Tutela Antecipada (prazo fixado pelo Juiz)": {dias: 5, tipo: "uteis", base: "Art. 536 do CPC"}
     },
     juizado: {
         "Defesa ou pagamento (Juizado Especial) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 9.099/95"},
@@ -252,10 +252,12 @@ const prazos = {
     },
     familia: {
         "Defesa em Ação de Alimentos (Para o réu falar sobre o pedido de pensão) - 15 dias": {dias: 15, tipo: "uteis", base: "CPC / Lei 5.478/68"},
-             "Pagar ou justificar (Atraso de Pensão sob pena de Prisão) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"},
+         "Pagar ou justificar (Atraso de Pensão sob pena de Prisão) - 3 dias": {dias: 3, tipo: "uteis", base: "Art. 528 do CPC"},
       "Falar sobre a justificativa do devedor (Em caso de atraso de Pensão) - 10 dias": {dias: 10, tipo: "uteis", base: "Art. 528, §2º do CPC"},
        "Defesa em Interdição/Curatela - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 752 do CPC", contaDaAudiencia: true},
-        "Prazo após Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true}
+        "Prazo após Audiência de Conciliação/Mediação - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335, I do CPC", contaDaAudiencia: true},
+      "Defesa inicial no Processo (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 335 do CPC"},
+        "Recurso - Apelação (Reclamar da decisão final do Juiz) - 15 dias": {dias: 15, tipo: "uteis", base: "Art. 1.003, §5º do CPC"},
     },
     imobiliario: {
         "Defesa em despejo (Contestação) - 15 dias": {dias: 15, tipo: "uteis", base: "Lei 8.245/91"},
