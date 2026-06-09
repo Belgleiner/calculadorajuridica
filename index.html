@@ -470,6 +470,10 @@ ${info.tipo !== "horas" ? `
         </p>
     `;
 
+// INSERIR ESTA LINHA PARA DEFINIR O TEXTO DA CATEGORIA
+    const selectCat = document.getElementById("categoria");
+    const catTexto = selectCat.options[selectCat.selectedIndex].text;
+
 // MONTAGEM DO TEXTO BASE PARA WHATSAPP
     textoWhatsParaEnviar = `📌 *Simulador de Prazos - TJPE*%0A` +
         `----------------------------%0A` +
