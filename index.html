@@ -476,7 +476,7 @@ ${info.tipo !== "horas" ? `
 
 // MONTAGEM DO TEXTO BASE PARA WHATSAPP
     textoWhatsParaEnviar = `📌 *Simulador de Prazos - TJPE*%0A` +
-        `━━━━━━━━━━━━━━━%0A` +
+        `​────────────────────%0A` +
          `🗓 *PRAZO FINAL:* ${dataFinal.toLocaleDateString('pt-BR')}%0A` +
  `*Área:* ${catTexto}%0A` +
       `*Documento:* ${atoSel}%0A` +
@@ -528,7 +528,7 @@ if ((inicioNoRecesso || fimNoRecesso) && cat !== "saude") {
 }
   
   // FINALIZAÇÃO DO TEXTO DO WHATSAPP COM ASSINATURA
-    textoWhatsParaEnviar += `%0A━━━━━━━━━━━━━━━━%0A` +
+    textoWhatsParaEnviar += `────────────────────%0A` +
         `💡 *Dica da Oficiala:* Sempre que receber um papel da justiça, procure um advogado ou a Defensoria Pública! Leve o mandado (pode ser no celular) e seus documentos e confirme seu prazo com eles.%0A%0A` +
        `_Simulador por Belizza Araújo - Oficiala de Justiça do TJPE_%0A%0A` +
           `Baixe ou simule on-line: http://belgleiner.github.io/calculadorajuridica/`;
@@ -547,10 +547,9 @@ function copiarEEnviarWhatsApp() {
     if (textoWhatsParaEnviar !== "") {
         // Criamos o texto adicional com as informações da Defensoria
         // %0A serve para "pular linha" no WhatsApp
-        let infoDefensoria = `%0A%0A📍 *INFORMAÇÕES DA DEFENSORIA:*%0A` +
+        let infoDefensoria = `%0A​────────────────────%0A📍 *INFORMAÇÕES DA DEFENSORIA:*%0A` +
             `- Endereços: https://www.defensoria.pe.def.br/enderecos/capital/%0A` +
-            `- Documentos: https://www.defensoria.pe.def.br/documentacao_necessaria/%0A%0A` +
-            `*Importante:* Não perca o prazo! Procure ajuda hoje mesmo.`;
+            `- Documentos: https://www.defensoria.pe.def.br/documentacao_necessaria/%0A%0A`;
 
         // Unimos o cálculo com as informações da Defensoria
         let mensagemCompleta = textoWhatsParaEnviar + infoDefensoria;
