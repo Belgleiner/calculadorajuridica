@@ -476,7 +476,7 @@ ${info.tipo !== "horas" ? `
 
 // MONTAGEM DO TEXTO BASE PARA WHATSAPP
     textoWhatsParaEnviar = `📌 *Simulador de Prazos - TJPE*%0A` +
-        `----------------------------%0A` +
+        `━━━━━━━━━━━━━━━━━━━%0A` +
          `🗓 *PRAZO FINAL:* ${dataFinal.toLocaleDateString('pt-BR')}%0A` +
  `*Área:* ${catTexto}%0A` +
       `*Documento:* ${atoSel}%0A` +
@@ -528,10 +528,10 @@ if ((inicioNoRecesso || fimNoRecesso) && cat !== "saude") {
 }
   
   // FINALIZAÇÃO DO TEXTO DO WHATSAPP COM ASSINATURA
-    textoWhatsParaEnviar += `%0A----------------------------%0A` +
-        `*Dica da Oficiala:* Sempre que receber um papel da justiça, procure um advogado ou a Defensoria Pública! Leve o mandado (pode ser no celular) e seus documentos e confirme seu prazo com eles.%0A%0A` +
-       `_Simulador por Belizza Araújo - Oficiala de Justiça do TJPE_%0A` +
-          `Baixe em: http://belgleiner.github.io/calculadorajuridica/`;
+    textoWhatsParaEnviar += `%0A━━━━━━━━━━━━━━━━━━━%0A` +
+        `💡 *Dica da Oficiala:* Sempre que receber um papel da justiça, procure um advogado ou a Defensoria Pública! Leve o mandado (pode ser no celular) e seus documentos e confirme seu prazo com eles.%0A%0A` +
+       `_Simulador por Belizza Araújo - Oficiala de Justiça do TJPE_%0A0A` +
+          `Baixe ou simule on-line: http://belgleiner.github.io/calculadorajuridica/`;
   
 // ... final da função calcular() ...
   
